@@ -1,0 +1,64 @@
+.audio--player{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 0.5rem;
+    border: 1px solid rgb(141, 141, 141);
+    border-radius: 10px;
+    color: rgb(218, 218, 218);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #003EAB;
+    z-index: 999;
+    transition: transform 0.3s ease;
+    }
+    
+    .audio--info{
+      align-self: center;
+    }
+    .episode--title {
+      font-size: 1rem;
+      font-weight: 600;
+      
+    }
+    
+    .navigation--wrapper {
+      min-width: 100%;
+      background-color: rgba(119, 119, 119, 0.781);
+      height: 5px;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    
+    /* input[type="range"] {
+        --range-progress: 50%;
+        
+      } */
+    
+      .seek-bar{
+        width: 0;
+        height: 100%;
+        background-color: white;
+        border-radius: 30px;
+    }
+    .time--progress{
+      display: flex;
+      justify-content: space-between;
+    }
+    .time--progress .time {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    
+    .controls--wrapper{
+      align-self: center;
+    }
+      
+      
+      
+    
+      
+     
+      
