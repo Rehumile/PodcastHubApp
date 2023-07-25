@@ -1,11 +1,12 @@
 
 import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import '../AudioPlayer/AudioPlayer.css'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { IconButton } from "@mui/material";
 
-export default function AudioPlayer({EpisodeDetails}) {
+export default function AudioPlayer() {
 
 //set state for when episode is playing
   const [isPlaying, setIsPlaying] = useState(false)
@@ -14,10 +15,11 @@ export default function AudioPlayer({EpisodeDetails}) {
   const [timeProgress, setTimeProgress]=useState(0);
   const [duration, setDuration] = useState(0)
 
-const currentEpisode = EpisodeDetails
+const currentEpisode = useSelector((state)=> state.audioPlayer.selectedEpisode)
+
 const audioRef = useRef(null)
 const progressBarRef=useRef()
-const playAnimationRef = useRef();
+
 
 useEffect(() => {
     if (currentEpisode) {
@@ -30,26 +32,7 @@ useEffect(() => {
 
   
 
-//   const repeat = useCallback(() => {
-//     const currentTime = audioRef.current.currentTime;
-//     setTimeProgress(currentTime);
-//     progressBarRef.current.value = currentTime;
-//     progressBarRef.current.style.setProperty(
-//       '--range-progress',
-//       `${(progressBarRef.current.value / duration) * 100}%`
-//     );
 
-//     playAnimationRef.current = requestAnimationFrame(repeat);
-//   }, [audioRef, duration, progressBarRef, setTimeProgress]);
-  
-// useEffect(() => {
-//     if (isPlaying) {
-//       audioRef.current.play();
-//     } else {
-//       audioRef.current.pause();
-//     }
-//     playAnimationRef.current = requestAnimationFrame(repeat);
-//   }, [isPlaying, audioRef, repeat]);
 
 
 // adding prompt to confirm whether user wants to leave even when audio is playing
@@ -94,9 +77,7 @@ if(!currentEpisode) {
       
   };
 
-//   const togglePlayPause = () => {
-//     setIsPlaying((prev) => !prev);
-//   };
+
 
 
   const onLoadedMetadata =() => {
@@ -123,10 +104,6 @@ setTimeProgress(currentTime)
 
   }
   
-  // const handleProgressChange = () => {
-
-  //   audioRef.current.currentTime = progressBarRef.current.value
-  // };
 
 
   // to display time duration in minutes and seconds

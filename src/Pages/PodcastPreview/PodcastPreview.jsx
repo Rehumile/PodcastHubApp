@@ -42,7 +42,6 @@ export default function PodcastPreview({ handleOpenCard }) {
     try {
       const data = await fetch(`https://podcast-api.netlify.app/shows`);
       const result = await data.json();
-console.log(result)
       setPodcastShows(result);
       setLoadingPodcasts(false);
     } catch (error) {
@@ -125,7 +124,6 @@ console.log(result)
    const showMoreButton = numOfVisibleShows <= filteredShowsByGenre.length;
   return (
     <>
-    <h1>Previews</h1>
       <Container sx={{ mt: "6rem" }}>
          <>
            <div className="filters">

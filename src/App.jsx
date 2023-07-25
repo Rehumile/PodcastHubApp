@@ -7,6 +7,8 @@ import PodcastPreview from "./Pages/PodcastPreview/PodcastPreview";
 import Login from "./Pages/Login/Login";
 import SinglePodcastDetails from "./components/SinglePodcastDetails/SInglePodcastDetails";
  import AudioPlayer from './components/AudioPlayer/AudioPlayer'
+ import { useDispatch } from "react-redux";
+ import { selectedEpisode } from "./features/AudioPlayer/playerSlice";
 
 function App() {
     const [selectedPodcastId, setSelectedPodcastId] = useState(null);
@@ -14,7 +16,7 @@ function App() {
    const [viewFavouritesPage, setViewFavouritesPage] = useState(false);
 
   //set state for selected episode to be played
-  const [selectedEpisode, setSelectedEpisode] = useState(null)
+  // const [selectedEpisode, setSelectedEpisode] = useState(null)
 
   const handleOpenCard = async (showId) => {
     setSelectedPodcastId(showId);
@@ -58,9 +60,10 @@ function App() {
     setViewFavouritesPage((prevState) => !prevState);
   };
 
+  const dispatch = useDispatch();
+
   const handleEpisode=(episode)=>{
-    
-    setSelectedEpisode(episode)
+    dispatch(selectedEpisode(episode))
   }
 
 
@@ -103,7 +106,7 @@ function App() {
 <Route exact path="/login" element={<Login />} />
         
      </Routes>
-<AudioPlayer EpisodeDetails={selectedEpisode}/>
+<AudioPlayer/>
 
      </BrowserRouter>
       {/*
