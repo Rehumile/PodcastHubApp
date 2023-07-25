@@ -1,0 +1,27 @@
+.podcast {
+    border: 1px solid #ccc;
+    width: 18rem;
+    height: 40rem;         
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 1rem;
+    border-radius: 9px;
+    padding: 1.5rem;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    text-decoration: none;
+   
+}
+
+
+.podcast:hover {
+    transform: scale(1.1);
+   
+}
+
+.podcast--image {
+    width: 100%;
+    border-radius: 9px;
+    margin-bottom: 9px;
+}
