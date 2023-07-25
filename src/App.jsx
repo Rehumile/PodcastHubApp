@@ -3,15 +3,15 @@ import { useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/NavbarComponent/Navbar";
 import PodcastPreview from "./Pages/PodcastPreview/PodcastPreview";
-import Favourites from "./Pages/Favourites/Favourites";
+ import Favourites from "./Pages/Favourites/Favourites";
 import Login from "./Pages/Login/Login";
 import SinglePodcastDetails from "./components/SinglePodcastDetails/SInglePodcastDetails";
-import AudioPlayer from './components/AudioPlayer/AudioPlayer'
+ import AudioPlayer from './components/AudioPlayer/AudioPlayer'
 
 function App() {
-  const [selectedPodcastId, setSelectedPodcastId] = useState(null);
-  const [favourites, setFavourites] = useState([]);
-  const [viewFavouritesPage, setViewFavouritesPage] = useState(false);
+    const [selectedPodcastId, setSelectedPodcastId] = useState(null);
+   const [favourites, setFavourites] = useState([]);
+   const [viewFavouritesPage, setViewFavouritesPage] = useState(false);
 
   //set state for selected episode to be played
   const [selectedEpisode, setSelectedEpisode] = useState(null)
@@ -66,16 +66,15 @@ function App() {
 
   return (
     <>
-      <CssBaseline />
-      <BrowserRouter>
-        <Navbar handleFavNavigation={handleFavNavigation} />
-        <Routes>
-          <Route
+    <BrowserRouter>
+     <Navbar handleFavNavigation={handleFavNavigation} />
+     <Routes>
+     <Route
             exact
             path="/"
             element={<PodcastPreview handleOpenCard={handleOpenCard} />}
           />
-          {selectedPodcastId && (
+ {selectedPodcastId && (
             <Route
               exact
               path="/podcast/:id"
@@ -88,7 +87,35 @@ function App() {
                 />
               }
             />
+          )} 
+          {viewFavouritesPage && (
+            <Route
+              exact
+              path="/favourites"
+              element={
+              <Favourites 
+              FavouritesEpisodesLists={favourites} 
+              toggleFavourite={handleTogglefavourite} 
+              onGoBack={handleGoBack}
+              playSelectedEpisode={handleEpisode}/>}
+            />
           )}
+<Route exact path="/login" element={<Login />} />
+        
+     </Routes>
+<AudioPlayer EpisodeDetails={selectedEpisode}/>
+
+     </BrowserRouter>
+      {/*
+        
+        <h1>Hello</h1>
+         
+          <Route
+            exact
+            path="/"
+            element={<PodcastPreview handleOpenCard={handleOpenCard} />}
+          />
+          
           {viewFavouritesPage && (
             <Route
               exact
@@ -103,9 +130,10 @@ function App() {
           )}
 
           <Route exact path="/login" element={<Login />} />
-        </Routes>
+        </Routes> 
         <AudioPlayer EpisodeDetails={selectedEpisode}/>
-      </BrowserRouter>
+      </BrowserRouter>*/}
+     
     </>
   );
 }

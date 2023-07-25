@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import GoBack from "../GoBack/GoBack";
 import Container from "@mui/material/Container";
 import "../SinglePodcastDetails/SinglePodcastDetails.css";
-import IconButton from "@mui/material/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import SmartDisplayOutlinedIcon from "@mui/icons-material/SmartDisplayOutlined";
+ import IconButton from "@mui/material/IconButton";
+ import FavoriteIcon from "@mui/icons-material/Favorite";
+ import SmartDisplayOutlinedIcon from "@mui/icons-material/SmartDisplayOutlined";
 
 export default function SinglePodcastDetails({ podcastId, onGoBack, toggleFavourite, playSelectedEpisode}) {
   // set state for the single show info
@@ -118,10 +118,10 @@ const clampText = (text, maxLength) => {
     <Container>
     
         <Link to='/'>
-     <GoBack onGoBack={onGoBack}/></Link> 
+     <GoBack onGoBack={onGoBack}/></Link>  
        
         
-   {singleShow && (
+  {singleShow && (
 <div className="show" key={singleShow.id}>
           <img className="show--image" src={singleShow.image} />
           <div className="details--container">
@@ -162,7 +162,7 @@ const clampText = (text, maxLength) => {
           </div>
         </div>
 
-        {selectedSeasonData && (
+          {selectedSeasonData && (
           <>
             <div>Episodes ({selectedSeasonData.episodes.length})</div>
 
@@ -178,13 +178,13 @@ const clampText = (text, maxLength) => {
                   >
                     <SmartDisplayOutlinedIcon fontSize="inherit" />
                   </IconButton>
-                </div>
+                </div> 
                 <div className="episode--details">
                   <div className="title-and-description">
                     <h3 className="title">{episode.title}</h3>
                     <p className="description">{episode.description}</p>
                   </div>
-                  <div onClick={()=>(toggleFavourite(singleShow, selectedSeasonData, episode))}>
+                   <div onClick={()=>(toggleFavourite(singleShow, selectedSeasonData, episode))}>
                     <IconButton
                       sx={{
                         m: "auto",
@@ -198,13 +198,13 @@ const clampText = (text, maxLength) => {
                     >
                       <FavoriteIcon fontSize="inherit" />
                     </IconButton>
-                  </div>
+                  </div> 
                 </div>
               </div>
             ))}
           </>
         )}
-      </Container>
+      </Container> 
     </>
   );
 }

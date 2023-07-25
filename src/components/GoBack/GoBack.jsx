@@ -8,7 +8,7 @@ export default function GoBack({onGoBack}) {
    
     return (
         <>
-        <Container>
+         <Container>
         <Button 
         variant="contained" 
         size="large" 
@@ -19,7 +19,7 @@ export default function GoBack({onGoBack}) {
         >
             Back
         </Button>
-</Container>
+</Container> 
 
         </>
     )

@@ -95,6 +95,7 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
 
  
     return (
+     
         <Container>
             <Link to='/'>
      <GoBack onGoBack={onGoBack}/></Link> 
@@ -108,7 +109,7 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
                     <img className='fav--image' src={episode.show.image}/>
                     <div className='fav--details'>
                 <h4>Podcast: {episode.show.title}</h4>
-                <div onClick={()=>(toggleFavourite(episode.show, episode.season, episode.episode))}>
+                 <div onClick={()=>(toggleFavourite(episode.show, episode.season, episode.episode))}>
                     <IconButton
                       sx={{
                         mr: "3rem",
@@ -121,7 +122,7 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
                     >
                       <FavoriteIcon fontSize="inherit" />
                     </IconButton>
-                  </div>    
+                  </div>     
             <p key={episode.ID} >Episode {episode.episode.episode}: {episode.episode.title}</p>
                 <p>{episode.episode.description}</p>
                 <p>Last Updated: {changeDateFormat(episode.show.updated)}</p>
@@ -133,8 +134,8 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
                     size="large"
                     sx={{ color: "#008033", fontSize: "5.5rem" }}
                   >
-                    <SmartDisplayOutlinedIcon fontSize="inherit" />
-                  </IconButton>
+                     <SmartDisplayOutlinedIcon fontSize="inherit" /> 
+                  </IconButton> 
                 </div>
  </div>
  </>

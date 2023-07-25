@@ -57,9 +57,9 @@ const [tabValue, setTabValue] = useState(0)
             "& button:active": { backgroundColor: "green" }
           }}
           >
-              <Tab icon={<HomeIcon />} iconPosition="top" sx={{color: 'white'}} label="Home"/>
-            <Tab icon={<FavoriteIcon />} iconPosition="top" sx={{color: 'white',}} label="Favourites"/>
-              <Tab icon={<PersonIcon />} iconPosition="top" sx={{color: 'white'}}  label="Login"/>
+              <Tab  iconPosition="top" sx={{color: 'white'}} label="Home"/>
+            <Tab  iconPosition="top" sx={{color: 'white',}} label="Favourites"/>
+              <Tab iconPosition="top" sx={{color: 'white'}}  label="Login"/>
             </Tabs>
         </Toolbar>
       </AppBar>

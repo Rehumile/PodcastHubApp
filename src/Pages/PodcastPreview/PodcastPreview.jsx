@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../PodcastPreview/PodcastPreview.css";
 import Card from "../../components/Card/Card";
 import { genres } from "../../utils/api";
-import Container from "@mui/material/Container";
+ import Container from "@mui/material/Container";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Search from "../../components/SearchComponent/Search";
@@ -42,7 +42,7 @@ export default function PodcastPreview({ handleOpenCard }) {
     try {
       const data = await fetch(`https://podcast-api.netlify.app/shows`);
       const result = await data.json();
-
+console.log(result)
       setPodcastShows(result);
       setLoadingPodcasts(false);
     } catch (error) {
@@ -80,7 +80,7 @@ export default function PodcastPreview({ handleOpenCard }) {
       )
     : searchResults;
 
-  //**************************filter component */
+
 
   const sortPodcast = (order) => {
     setSortedPodcasts(order);
@@ -104,9 +104,9 @@ export default function PodcastPreview({ handleOpenCard }) {
     setPodcastShows(orderedShows);
   };
 
-  // const handleGoBack =() => {
-  //   setSelectedPodcast(null)
-  // }
+  const handleGoBack =() => {
+    setSelectedPodcast(null)
+  }
 
   //map over the shows
   const cards = filteredShowsByGenre.slice(0, numOfVisibleShows).map((show) => {
@@ -122,27 +122,27 @@ export default function PodcastPreview({ handleOpenCard }) {
     );
   });
 
-  const showMoreButton = numOfVisibleShows <= filteredShowsByGenre.length;
+   const showMoreButton = numOfVisibleShows <= filteredShowsByGenre.length;
   return (
     <>
+    <h1>Previews</h1>
       <Container sx={{ mt: "6rem" }}>
-        <>
-        <h1>Testing</h1>
-          <div className="filters">
+         <>
+           <div className="filters">
             <Search
               podcastShows={podcastShows}
               setSearchResults={setSearchResults}
             />
 
-            <div className="filter--sort">
+           <div className="filter--sort">
               <SortFilter sortPodcast={sortPodcast} />
             </div>
-          </div>
+           </div>
 
-          <GenreFilter
-            selectedGenre={selectedGenre}
+           <GenreFilter
+             selectedGenre={selectedGenre}
             setSelectedGenre={setSelectedGenre}
-          />
+          />  
 
           <div className="shows-list">{cards}</div>
 
@@ -159,7 +159,7 @@ export default function PodcastPreview({ handleOpenCard }) {
             </Button>
           )}
         </>
-      </Container>
+      </Container> 
     </>
   );
 }
