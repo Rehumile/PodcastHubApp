@@ -1,0 +1,11 @@
+.filter--search{
+    margin-left: 4rem;
+    
+}
+.filter--search input{
+    margin-bottom: 1rem;
+background-color: transparent;
+border: 1px solid #003EAB;
+border-radius: 2rem;
+height: 2rem
+}
