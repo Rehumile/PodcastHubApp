@@ -4,9 +4,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/NavbarComponent/Navbar";
 import PodcastPreview from "./Pages/PodcastPreview/PodcastPreview";
  import Favourites from "./Pages/Favourites/Favourites";
-import Login from "./Pages/Login/Login";
-import SinglePodcastDetails from "./components/SinglePodcastDetails/SInglePodcastDetails";
- import AudioPlayer from './components/AudioPlayer/AudioPlayer'
+import Auth from "./components/Authentication/Auth";
+// import Login from "./Pages/Login/Login";
+ import SinglePodcastDetails from "./components/SinglePodcastDetails/SInglePodcastDetails";
+  import AudioPlayer from './components/AudioPlayer/AudioPlayer'
  import { useDispatch } from "react-redux";
  import { selectedEpisode } from "./features/AudioPlayer/playerSlice";
 
@@ -69,7 +70,8 @@ function App() {
 
   return (
     <>
-    <BrowserRouter>
+    <p>hello</p>
+     <BrowserRouter>
      <Navbar handleFavNavigation={handleFavNavigation} />
      <Routes>
      <Route
@@ -103,12 +105,13 @@ function App() {
               playSelectedEpisode={handleEpisode}/>}
             />
           )}
-<Route exact path="/login" element={<Login />} />
+
+  <Route exact path="/login" element={<Auth/>} /> 
         
      </Routes>
 <AudioPlayer/>
 
-     </BrowserRouter>
+     </BrowserRouter> 
       {/*
         
         <h1>Hello</h1>
