@@ -8,7 +8,10 @@ import AddIcon from "@mui/icons-material/Add";
 import Search from "../../components/SearchComponent/Search";
 import SortFilter from "../../components/SortFilterComponent/SortFilter";
 import GenreFilter from "../../components/GenreFilterComponent/GenreFilter";
+import { ColorRing } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
+//*****!!!!!!place token in props
 export default function PodcastPreview({ handleOpenCard }) {
   //setting state for setting a selected podcast
   const [selectedPodcast, setSelectedPodcast] = useState(null);
@@ -25,6 +28,9 @@ export default function PodcastPreview({ handleOpenCard }) {
   //set state for when the shows are loading
   const [loadingPodcasts, setLoadingPodcasts] = useState(true);
 
+  // set state load more podcast shows
+  const [loadingMoreShows, setLoadingMoreShows] = useState(false)
+
   // set state for when there is an error in fetching podcast shows
 
   const [isError, setIsError] = useState(false);
@@ -38,6 +44,8 @@ export default function PodcastPreview({ handleOpenCard }) {
   // Set initial search results to all podcasts
   const [searchResults, setSearchResults] = useState(podcastShows);
 
+  const navigate = useNavigate()
+
   const fetchPodcasts = async () => {
     try {
       const data = await fetch(`https://podcast-api.netlify.app/shows`);
@@ -47,6 +55,7 @@ export default function PodcastPreview({ handleOpenCard }) {
     } catch (error) {
       console.log(`ERROR ${error}`);
       setIsError(true);
+      setLoadingPodcasts(false)
     }
   };
 
@@ -58,6 +67,22 @@ export default function PodcastPreview({ handleOpenCard }) {
   useEffect(() => {
     setSearchResults(podcastShows);
   }, [podcastShows]);
+
+  if (loadingPodcasts) {
+    return (
+      <div className="loading--icon">
+           <ColorRing
+      visible={true}
+      height="150"
+      width="150"
+      ariaLabel="blocks-loading"
+      wrapperStyle={{}}
+     wrapperClass="blocks-wrapper"
+       colors={['#003EAB', '#008033','#EEF3F6','#003EAB', '#008033']}
+     />  
+</div>
+    )
+  }
 
   function getGenreTitle(genreId) {
     if (genreId > 0 && genreId <= genres.length) {
@@ -107,6 +132,25 @@ export default function PodcastPreview({ handleOpenCard }) {
     setSelectedPodcast(null)
   }
 
+  //this function will log user out of their account. remove token from session storage 
+  // and navigate back to login page
+  const handleLogout = () => {
+    sessionStorage.removeItem('token')
+    navigate('/login')
+  }
+
+  const handleLoadMoreShows = () => {
+    setLoadingMoreShows(true);
+    try {
+      setNumOfVisibleShows((prevVisibleShows) => prevVisibleShows + 9);
+      setLoadingPodcasts(false);
+    } catch (error) {
+      console.error("There was an issue fetching more shows. Try Refreshing Page", error);
+    }
+    setLoadingMoreShows(false);
+  };
+
+
   //map over the shows
   const cards = filteredShowsByGenre.slice(0, numOfVisibleShows).map((show) => {
     const genreTitles = show.genres.map((genreId) => getGenreTitle(genreId));
@@ -124,7 +168,13 @@ export default function PodcastPreview({ handleOpenCard }) {
    const showMoreButton = numOfVisibleShows <= filteredShowsByGenre.length;
   return (
     <>
+    
+    {/* <h1>Welcome Back, {token.user.user_metadata.full_name}</h1> */}
+    {/* <button onClick={handleLogout}>Logout</button> */}
       <Container sx={{ mt: "6rem" }}>
+
+        
+       
          <>
            <div className="filters">
             <Search
@@ -140,24 +190,51 @@ export default function PodcastPreview({ handleOpenCard }) {
            <GenreFilter
              selectedGenre={selectedGenre}
             setSelectedGenre={setSelectedGenre}
-          />  
+          />
+          {/**loadingPodcasts && (
+        <div className="loading--icon">
+           <ColorRing
+      visible={true}
+      height="150"
+      width="150"
+      ariaLabel="blocks-loading"
+      wrapperStyle={{}}
+     wrapperClass="blocks-wrapper"
+       colors={['#003EAB', '#008033','#EEF3F6','#003EAB', '#008033']}
+     />  
+</div>
+          )*/}
 
           <div className="shows-list">{cards}</div>
-
-          {showMoreButton && (
-            <Button
-              sx={{ left: "45%", mt: "2rem", mb: "2rem" }}
-              endIcon={<AddIcon />}
-              size="large"
-              color="secondary"
-              variant="contained"
-              onClick={() => setNumOfVisibleShows(numOfVisibleShows + 9)}
-            >
-              Show More
-            </Button>
-          )}
+{loadingMoreShows ? (
+   <div className="loading--icon">
+   <ColorRing
+visible={true}
+height="80"
+width="80"
+ariaLabel="blocks-loading"
+wrapperStyle={{}}
+wrapperClass="blocks-wrapper"
+colors={['#003EAB', '#008033','#EEF3F6','#003EAB', '#008033']}
+/>  
+</div>)
+: showMoreButton && (
+  <Button
+    sx={{ left: "45%", mt: "2rem", mb: "2rem" }}
+    endIcon={<AddIcon />}
+    size="large"
+    color="secondary"
+    variant="contained"
+    onClick={() => {handleLoadMoreShows}}
+  >
+    Show More
+  </Button>
+)}
         </>
       </Container> 
+
     </>
   );
 }
+
+
