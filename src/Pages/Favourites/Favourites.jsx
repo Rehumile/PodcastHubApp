@@ -10,8 +10,14 @@ import IconButton from "@mui/material/IconButton";
 import SmartDisplayOutlinedIcon from "@mui/icons-material/SmartDisplayOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SortFilter from '../../components/SortFilterComponent/SortFilter'
+import { ColorRing } from 'react-loader-spinner'
+import { supabase } from '../../supabaseClient'
 
-export default function Favourites({FavouritesEpisodesLists, toggleFavourite, onGoBack, playSelectedEpisode}) {
+
+//if user has not signed in --> show message sign in to view your favourites
+// if user has signed in --> fetch fav episodes from supabase database and render to page
+
+export default function Favourites({FavouritesEpisodesLists, toggleFavourite, onGoBack, playSelectedEpisode, session}) {
     const [favouriteEpisodes ,setFavouriteEpisodes] = useState([])
 
     // set state for loading favourite episodes
@@ -22,6 +28,12 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
 
   //set state for sorted podcasts
   const [sortedPodcasts, setSortedPodcasts] = useState("");
+
+  // if (!session) {
+  //   return (
+  //     <h1> Head to login page or signup to get access to favourites</h1>
+  //   )
+  // }
 
    // Fetch favorite episodes data from the composite key that is saved in favorites. Made from show ID, season number and episode number
    useEffect(() => {
@@ -55,6 +67,7 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
           };
 
           episodes.push(favObject);
+          setLoadingDetails(false)
         } catch (error) {
           console.error(
             "Issue fetching this show's details. Please try again.",
@@ -67,6 +80,63 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
 
     fetchFavoriteEpisodes();
   }, [FavouritesEpisodesLists]);
+
+  const fetchFavouriteEpisodesFromDatabase = async () => {
+    if (!session) return  <h1> Head to login page or signup to get access to favourites</h1>
+
+    try {
+      const {data, error} = await supabase
+      .from('favourite_episodes')
+      .select('*')
+      .eq('id', session.user.id)
+      if (error) {
+        console.error('Error fetching favorite episodes:', error);
+      } else {
+        console.log(data)
+      //   const episodes = [];
+
+      // // Loop through composite keys in favorites array
+      // for (let episode of FavouritesEpisodesLists) {
+
+      //   const [podcastId,seasonNum ,episodeNum ] = episode.favouriteId.split('-') 
+
+      //   // Fetch and store show data in state
+      //   try {
+      //     const response = await fetch(
+      //       `https://podcast-api.netlify.app/id/${podcastId}`
+      //     );
+      //     const data = await response.json();
+      //     const seasonData = data.seasons.find(
+      //       (season) => season.season === parseInt(seasonNum)
+      //     );
+
+      //     // Build object for favorite data
+      //     const favObject = {
+      //       ID : episode.favouriteId,
+      //       show: data,
+      //       season: seasonData,
+      //       episode: seasonData.episodes.find(
+      //         (episode) => episode.episode === parseInt(episodeNum)
+      //       ),
+      //       dateAdded: episode.dateAdded
+      //     };
+
+      //     episodes.push(favObject);
+      //     setLoadingDetails(false)
+      //   } catch (error) {
+      //     console.error(
+      //       "Issue fetching this show's details. Please try again.",
+      //       error
+      //     );
+      //   }
+      // }
+      // setFavouriteEpisodes(episodes);
+    
+      }
+    } catch (error) {
+      console.error('Error fetching favorite episodes:', error.message);
+    }
+  }
 
   const sortPodcast = (order) => {
     setSortedPodcasts(order);
@@ -89,8 +159,28 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
     }
     setFavouriteEpisodes(orderedShows);
   };
-  
 
+//   if (loadingDetails) {
+//     return (
+//       <div className="loading--icon">
+//            <ColorRing
+//       visible={true}
+//       height="150"
+//       width="150"
+//       ariaLabel="blocks-loading"
+//       wrapperStyle={{}}
+//      wrapperClass="blocks-wrapper"
+//        colors={['#003EAB', '#008033','#EEF3F6','#003EAB', '#008033']}
+//      />  
+// </div>
+//     )
+//   }
+  
+if (!favouriteEpisodes) {
+  return (
+    <h1>Havent added any episodes yet. Go discover Podcasts to listen to in Home Page !</h1>
+  )
+}
 
 
  
@@ -99,12 +189,15 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
         <Container>
             <Link to='/'>
      <GoBack onGoBack={onGoBack}/></Link> 
-        <div >
+     {session && <p>Here are your favourites, {session.user.user_metadata.full_name}</p>}
+    
+        
             <h1 className='heading'>Favourites</h1>
             {favouriteEpisodes.map((episode) => (
 
                 <>
                 <SortFilter sortPodcast={sortPodcast}/>
+              
                 <div key={episode.ID} className='fav--episode'>
                     <img className='fav--image' src={episode.show.image}/>
                     <div className='fav--details'>
@@ -141,7 +234,7 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
  </>
            ) )}
            
-        </div>
+        
        </Container> 
     )
     

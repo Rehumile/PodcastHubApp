@@ -7,11 +7,13 @@ import PodcastPreview from "./Pages/PodcastPreview/PodcastPreview";
 import { SignUp, LoginUser } from "./components/Authentication";
 import { getSavedLastPlayedEpisode } from "./utils/localStorage";
 
+
 // import Login from "./Pages/Login/Login";
  import SinglePodcastDetails from "./components/SinglePodcastDetails/SInglePodcastDetails";
   import AudioPlayer from './components/AudioPlayer/AudioPlayer'
  import { useDispatch } from "react-redux";
  import { selectedEpisode } from "./features/AudioPlayer/playerSlice";
+import { supabase } from "./supabaseClient";
 
 function App() {
     const [selectedPodcastId, setSelectedPodcastId] = useState(null);
@@ -19,7 +21,8 @@ function App() {
    const [viewFavouritesPage, setViewFavouritesPage] = useState(false);
    const [viewLoginPage, setViewLoginPage] = useState(false)
 
-   const [token, setToken] = useState(false)
+   const [session, setSession] = useState(false)
+   const [user, setUser] = useState(null)
 
   //set state for selected episode to be played
   // const [selectedEpisode, setSelectedEpisode] = useState(null)
@@ -28,8 +31,8 @@ function App() {
   const dispatch = useDispatch();
 
 
-  if(token) {
-    sessionStorage.setItem('token', JSON.stringify(token))
+  if(session) {
+    sessionStorage.setItem('token', JSON.stringify(session))
   }
    
   // useEffect(() => {
@@ -38,6 +41,15 @@ function App() {
   //     setToken(data)
   //   }
   // })
+
+//   useEffect(() => {
+    
+// const { data, error } =  supabase.auth.getSession()
+
+//     console.log(data)
+//   }, [])
+
+
 
   //*****retrieve the last played episode from local storage when app loads
   // useEffect(()=> {
@@ -60,12 +72,14 @@ function App() {
 //if user has not signed --> direct to sign in page 
     if (favourites.some((episode) => episode.favouriteId === favouriteId)) {
       removeFavourite(favouriteId);
+      removeFavouriteFromDatabase(favouriteId)
     } else {
-      addFavourite(favouriteId);
+      addFavouriteToState(favouriteId);
+      addToFavouritesDatabase(favouriteId)
     }
   };
 
-  const addFavourite = (id) => {
+  const addFavouriteToState = (id) => {
     const timeAdded= new Date()
     const favouriteEpisode = {
       favouriteId: id,
@@ -77,6 +91,29 @@ function App() {
     console.log("added");
     // add data to supabase
   };
+  const addToFavouritesDatabase = async (favouriteEpisodeId) => {
+    if (!session) {
+      console.log("User not authenticated")
+      return;
+    }
+    try {
+      const favouriteEpisode = {
+        id: session.user.id,
+        date_added: new Date(),
+        favourite_id: favouriteEpisodeId
+      }
+      const {data, error} = await supabase
+      .from('favourite_episodes')
+      .insert([favouriteEpisode])
+      if (error){
+        console.error('error saving episode to favourites.' ,error)
+      } else {
+        console.log('episode is added to favourites', data)
+      }
+    } catch (error) {
+      console.error('error saving to favourites', error.message)
+    }
+  }
 
   const removeFavourite = (id) => {
     const newFavouritesList = favourites.filter((favourite)=> favourite.favouriteId !== id)
@@ -87,6 +124,23 @@ function App() {
 
     // remove data from supabase
   };
+  const removeFavouriteFromDatabase = async (favouriteEpisodeId) => {
+    try {
+      const {data, error} = await supabase
+      .from('favourite_episodes')
+      .delete()
+      .eq('id', session.user.id) 
+      .eq('favourite_id', favouriteEpisodeId)
+      if (error) {
+        console.error('Error removing from favorites:', error);
+      } else {
+        console.log('Episode removed from favorites:', data);
+       // fetchFavouriteEpisodes(); // Refresh the favorite episodes after removal
+      }
+    } catch (error) {
+      console.error('Error removing from favorites:', error.message);
+    }
+  } 
 
   const handleFavNavigation = () => {
     setViewFavouritesPage((prevState) => !prevState);
@@ -111,16 +165,16 @@ function App() {
      handleLoginNavigation={handleLoginNavigation} />
      <Routes>
       {/*this states if the token is true then the user will be granted access to podcast previews */}
-      {/*{token && <Route
+       <Route
             exact
             path="/"
-            element={<PodcastPreview handleOpenCard={handleOpenCard} token={token}/>}
-          />} */}
-     <Route
+            element={<PodcastPreview handleOpenCard={handleOpenCard} session={session}/>}
+          />
+    {/* <Route
             exact
             path="/"
             element={<PodcastPreview handleOpenCard={handleOpenCard} />}
-          />
+          />*/}
  {selectedPodcastId && (
             <Route
               exact
@@ -144,12 +198,14 @@ function App() {
               FavouritesEpisodesLists={favourites} 
               toggleFavourite={handleTogglefavourite} 
               onGoBack={handleGoBack}
-              playSelectedEpisode={handleEpisode}/>}
+              playSelectedEpisode={handleEpisode}
+              session={session}
+              />}
             />
           )}
 
    <Route exact path="/signup" element={<SignUp/>} />  
-   <Route exact path="/login" element={<LoginUser setToken={setToken}/>} />  
+   <Route exact path="/login" element={<LoginUser setSession={setSession}/>} />  
         
      </Routes>
 <AudioPlayer/>
