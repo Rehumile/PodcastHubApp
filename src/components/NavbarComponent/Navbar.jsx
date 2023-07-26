@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import {useNavigate, Link} from 'react-router-dom'
 import {Tabs, Tab} from '@mui/material'
 import {AppBar, Box, Toolbar, Typography} from '@mui/material'
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PersonIcon from '@mui/icons-material/Person';
-import HomeIcon from '@mui/icons-material/Home';
+// import FavoriteIcon from '@mui/icons-material/Favorite';
+// import PersonIcon from '@mui/icons-material/Person';
+// import HomeIcon from '@mui/icons-material/Home';
 
-export default function Navbar({handleFavNavigation}) {
+export default function Navbar({handleFavNavigation, handleLoginNavigation}) {
 
 // state for keeping the value of the tab
 const [tabValue, setTabValue] = useState(0)
@@ -29,7 +29,8 @@ const [tabValue, setTabValue] = useState(0)
       navigate('/favourites')
     handleFavNavigation()
     }
-    if(tabValue === 2) navigate('/login')
+    if(tabValue === 2) navigate('/signup')
+    handleLoginNavigation()
  },[tabValue])
 
   return (
