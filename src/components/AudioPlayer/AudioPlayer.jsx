@@ -26,7 +26,8 @@ useEffect(() => {
       audioRef.current.src = currentEpisode.file;
       audioRef.current.play();
       setIsPlaying(true)
-     
+     // save the last played episode to local storage
+    localStorage.setItem('lastPlayedEpisode', JSON.stringify(currentEpisode))
     }
   }, [currentEpisode]);
 
@@ -94,16 +95,20 @@ setTimeProgress(currentTime)
   }
 
   //function to be able to click on seek bar and it will go to specifc audio timeframe
-  const checkWidth = (e)=>
-  {
-    let width = progressBarRef.current.clientWidth;
-    const offset = e.nativeEvent.offsetX;
-
-    const divprogress = offset / width * 100;
-    audioRef.current.currentTime = divprogress / 100 * audioRef.current.duration;
-
+ 
+  const clickSeekBar = (e) => {
+    const progressBarWidth = progressBarRef.current.clientWidth
+    const offsetX = e.nativeEvent.offsetX
+    const progressPercent = (offsetX / progressBarWidth) *100
+    const audioDuration = audioRef. current.duration
+    const newCurrentTime = (progressPercent / 100) * audioDuration
+    audioRef.current.currentTime = newCurrentTime
   }
-  
+
+  const handleCloseAudioPlayer = () => {
+    audioRef.current.pause()
+    setIsPlaying(false)
+  }
 
 
   // to display time duration in minutes and seconds
@@ -134,7 +139,7 @@ setTimeProgress(currentTime)
                
           
             <div className="navigation--wrapper" ref={progressBarRef}>
-             <div className='seek-bar'style={{width: `${(timeProgress/ duration) * 100}%`}}></div> 
+             <div className='seek-bar'style={{width: `${(timeProgress/ duration) * 100}%`}} onClick={clickSeekBar}></div> 
             </div>
             <div className="time--progress">
                   <span className="time current">{formatTime(timeProgress)}</span>
