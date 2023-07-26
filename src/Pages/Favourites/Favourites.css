@@ -16,3 +16,8 @@
     border-radius: 9px;
     margin-bottom: 9px;
 }
+
+.loading--icon {
+    display: flex;
+    justify-content: center;
+}

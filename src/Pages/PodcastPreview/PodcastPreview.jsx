@@ -12,7 +12,7 @@ import { ColorRing } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
 //*****!!!!!!place token in props
-export default function PodcastPreview({ handleOpenCard }) {
+export default function PodcastPreview({ handleOpenCard, session }) {
   //setting state for setting a selected podcast
   const [selectedPodcast, setSelectedPodcast] = useState(null);
 
@@ -169,7 +169,7 @@ export default function PodcastPreview({ handleOpenCard }) {
   return (
     <>
     
-    {/* <h1>Welcome Back, {token.user.user_metadata.full_name}</h1> */}
+   {/**<h1>Welcome Back, {session.user.user_metadata.full_name}</h1>  */}  
     {/* <button onClick={handleLogout}>Logout</button> */}
       <Container sx={{ mt: "6rem" }}>
 
@@ -225,7 +225,7 @@ colors={['#003EAB', '#008033','#EEF3F6','#003EAB', '#008033']}
     size="large"
     color="secondary"
     variant="contained"
-    onClick={() => {handleLoadMoreShows}}
+    onClick={handleLoadMoreShows}
   >
     Show More
   </Button>

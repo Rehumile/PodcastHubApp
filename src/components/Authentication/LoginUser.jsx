@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 // import '../Authentication/Auth.css'
 
-export default function LoginUser({setToken}) {
+export default function LoginUser({setSession}) {
     const [loading, setLoading] = useState(false)
     // set state for email
     const [formData, setFormData] = useState({
@@ -31,8 +31,9 @@ try {
     password: formData.password
  }) 
     navigate('/')
- setToken(data)
- //console.log(data) // this will log the session. access token to give you access to particular website
+ setSession(data)
+ console.log(data) // this will log the session. access token to give you access to particular website
+ //session refers to the authenticated state of a user
  if (error) throw error
  
 } catch (error) {
