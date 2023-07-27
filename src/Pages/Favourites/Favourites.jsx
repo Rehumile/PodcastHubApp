@@ -33,6 +33,8 @@ export default function Favourites({FavouritesEpisodesLists,
   //set state for sorted podcasts
   const [sortedPodcasts, setSortedPodcasts] = useState("");
 
+  //set state for shared URLs
+  const [sharedURLs, setSharedURLs] = useState([])
  
 
    // Fetch favorite episodes data from the composite key that is saved in favorites. Made from show ID, season number and episode number
@@ -82,12 +84,23 @@ export default function Favourites({FavouritesEpisodesLists,
 
     fetchFavoriteEpisodes();
   }, [FavouritesEpisodesLists]);
-  
+
   if (!session) {
     return (
       <h1> Head to login page or signup to get access to favourites</h1>
     )
   } 
+
+  const handleShareEpisode = (podcastID, seasonNumber, episodeNumber) => {
+    const sharedURL = `http://localhost:5173/listen?podcast=${podcastID}&season=${seasonNumber}&episode=${episodeNumber}`
+    setSharedURLs((prevSharedUrls) => {
+      return{
+        ...prevSharedUrls,
+      [episodeNumber]: sharedURL,
+      }
+    });
+   
+  }
   
 
 
@@ -135,48 +148,61 @@ export default function Favourites({FavouritesEpisodesLists,
  
     return (
      
-        <Container>
+        <Container sx={{mt: '2rem'}}>
             <Link to='/'>
      <GoBack onGoBack={onGoBack}/></Link> 
-     {session && <p>Here are your favourites, {session.user.user_metadata.full_name}</p>}
-    
-        <SortFilter sortPodcast={sortPodcast}/>
-            <h1 className='heading'>Favourites</h1>
-            {favouriteEpisodes.map((episode) => (
 
+     {session && <p className='text'>Here are your favourites, {session.user.user_metadata.full_name}❤️</p>}
+    <div className='container'>
+      <h1 className='heading'>Sort By</h1>
+        <SortFilter sortPodcast={sortPodcast}/>
+        
+            
+            </div>
+            {favouriteEpisodes.map((episode) => (
                 <>
                 <div key={episode.ID} className='fav--episode'>
                     <img className='fav--image' src={episode.show.image}/>
                     <div className='fav--details'>
-                <h4>Podcast: {episode.show.title}</h4>
-                 <div onClick={()=>(toggleFavourite(episode.show, episode.season, episode.episode))}>
-                    <IconButton
-                      sx={{
-                        mr: "3rem",
-                        color: "red",
-                      }}
-                      aria-label="favoourite"
-                      size="large"
-                      
-                      
-                    >
-                      <FavoriteIcon fontSize="inherit" />
-                    </IconButton>
-                  </div>     
-            <p key={episode.ID} >Episode {episode.episode.episode}: {episode.episode.title}</p>
+                <h4 className='title'> {episode.show.title}</h4>
+                <p className='episodeNum' key={episode.ID} ><span className='bold'>Episode {episode.episode.episode}:</span> {episode.episode.title}</p>
                 <p>{episode.episode.description}</p>
-                <p>Last Updated: {changeDateFormat(episode.show.updated)}</p>
-                <p>Added to Favourites: {getDateAndTime(episode.dateAdded)} </p>
+                <p><span className='bold'>Last Updated: </span>{changeDateFormat(episode.show.updated)}</p>
+                <p><span className='bold'>Added to Favourites:</span> {getDateAndTime(episode.dateAdded)} </p>
  </div>
+ <button className='share--button' onClick={()=>handleShareEpisode(episode.show.id, episode.season.season, episode.episode.episode)}>
+  Share Episode
+  </button>
+                      {sharedURLs[episode.episode.episode] && (
+                        <div className='Url'>
+                          <p>{sharedURLs[episode.episode.episode]}</p>
+                        </div>
+                      )}
+ <div className='favourite--buttons'>
+
  <div onClick={()=>playSelectedEpisode(episode.episode)} className="play--button">
                   <IconButton
                     aria-label="playbutton"
                     size="large"
-                    sx={{ color: "#008033", fontSize: "5.5rem" }}
+                    sx={{ color: "#008033", fontSize: "3rem" }}
                   >
                      <SmartDisplayOutlinedIcon fontSize="inherit" /> 
                   </IconButton> 
                 </div>
+                <div onClick={()=>(toggleFavourite(episode.show, episode.season, episode.episode))}>
+                    <IconButton
+                      sx={{
+                        color: "red",
+                        fontSize: "3rem"
+                      }}
+                      aria-label="favoourite"
+                      
+                    >
+                      <FavoriteIcon fontSize="inherit" />
+                    </IconButton>
+                  </div> 
+</div>
+                
  </div>
  </>
            ) )}
@@ -186,3 +212,6 @@ export default function Favourites({FavouritesEpisodesLists,
     )
     
 }
+
+// http://localhost:5173/favourites
+//

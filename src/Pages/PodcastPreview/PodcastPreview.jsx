@@ -73,18 +73,7 @@ export default function PodcastPreview({ handleOpenCard, session }) {
     setSearchResults(podcastShows);
   }, [podcastShows]);
 
-  // useEffect(() => {
-  //   const filteredShows = podcastShows.filter(
-  //     (show) =>
-  //       show.title.toLowerCase().includes(query.toLowerCase()) &&
-  //       !carouselShows.find((carouselShow) => carouselShow.id === show.id)
-  //   );
-  
-  //   // Shuffle the filtered shows array
-  //   const shuffledShows = filteredShows.sort(() => 0.5 - Math.random());
-  
-  //   setCarouselShows(shuffledShows.slice(0, numOfVisibleShows));
-  // }, [podcastShows, query, numOfVisibleShows]);
+ 
 
   function shuffleArray(array) {
     // Create a copy of the original array
@@ -202,48 +191,19 @@ export default function PodcastPreview({ handleOpenCard, session }) {
     );
   });
 
-  const carouselSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
+
 
   const showMoreButton = numOfVisibleShows <= filteredShowsByGenre.length;
   return (
     <>
-      {/**<h1>Welcome Back, {session.user.user_metadata.full_name || }</h1>  */}
+      { session ? <h1 className='welcome'>Welcome Back, {session.user.user_metadata.full_name}👋🏽</h1> : <h1 className="welcome">Welcome to Podcast Hub👋🏽</h1>  }
+      
       {/* <button onClick={handleLogout}>Logout</button> */}
-      {/* <Carousel handleOpenCard={handleOpenCard} podcastShows={shuffledPodcasts}/> */}
-      {/* <Slider {...carouselSettings} className="show-carousel">
-      {podcastShows.slice(0, 8).map((show) => (
-        <div key={show.id} className="carousel-slide" onClick={handleOpenCard}>
-          <img className="carousel-image" src={show.image} alt={show.title} />
-          <div className="show-details">
-            <h3 className="show-title">{show.title}</h3>
-            <p className="show-seasons">Seasons: {show.seasons}</p>
-          </div>
-        </div>
-      ))}
-    </Slider> */}
-      <Container sx={{ mt: "8rem" }}>
+
+      <Container sx={{ mt: "4rem" }}>
         <>
-       <div>Carousel</div>
+       <h1 className="text">Recommended for you..</h1>
+       <Carousel handleClick={handleOpenCard} podcastShows={shuffledPodcasts}/>
           <div className="filters">
             <Search
               podcastShows={podcastShows}
@@ -257,8 +217,10 @@ export default function PodcastPreview({ handleOpenCard, session }) {
           </div>
 
           
-
-          <div className="shows-list">{cards}</div>
+    <h1 className="text" style={{marginRight: '2rem'}}>Discover more shows😁</h1>
+          <div className="shows-list">
+            
+            {cards}</div>
           {loadingMoreShows ? (
             <div className="loading--icon">
               <ColorRing

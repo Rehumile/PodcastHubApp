@@ -1,23 +1,84 @@
-.heading {
-    margin-top: 5rem;
-}
-
-.fav--episode {
-    display: flex;
-    column-gap: 1.5rem;
-    border: 1px solid #ccc;
-    margin-bottom: 1rem;
-    padding: 1rem;
-}
-
 .fav--image {
-    width: 100px;
-    height: 150px;
+    width: 10rem;
+    height: 12rem;
     border-radius: 9px;
     margin-bottom: 9px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+.title {
+    margin-bottom: 0.5rem;
+}
+.fav--episode {
+ border-radius: 12px;
+ padding: 1rem;
+ margin: 1rem;
+ background-color: #1C2321;
+ color: white;
+}
+.fav--details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.fav--details p {
+    margin: 0;
+    margin-bottom: 1rem;
+ 
+}
+.fav--details > .episodeNum {
+    margin-top: 1rem;
+}
+
+.favourite--buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.share--button {
+    background-color: #008033;
+    border: none;
+    color: white;
+    padding: 0.3rem;
+}
+.Url {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+Url:hover {
+    color: #003EAB
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+ .heading {
+   margin: 0;
+  
+}
+
+@media only screen and (min-width: 1024px) {
+    .container {
+        flex-direction: row;
+    }
+    .heading {
+        margin-right: 1rem;
+       
+     }
+}
+
+/*
+
 
 .loading--icon {
     display: flex;
     justify-content: center;
-}
+} */

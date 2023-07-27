@@ -2,13 +2,15 @@
     font-family: Inter,Verdana, Geneva, Tahoma, sans-serif;
 }
 
-h1 {
-    margin-top: 5rem;
+.welcome {
+    margin-top: 8rem;
+   margin-left: 2rem;
 }
 
 .loading--icon {
     display: flex;
     justify-content: center;
+    margin-top: 10rem;
 }
 
 .filters {
