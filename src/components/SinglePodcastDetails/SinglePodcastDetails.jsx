@@ -176,7 +176,7 @@ const clampText = (text, maxLength) => {
                  <p className="description">{clampText(episode.description)}</p>
                  
                  <div className="episode--buttons">
-                <div onClick={()=>playSelectedEpisode(episode)} className="play--button">
+                <div onClick={()=>playSelectedEpisode(episode, singleShow.id, selectedSeasonData)} className="play--button">
                   <IconButton
                     aria-label="playbutton"
                     size="large"
