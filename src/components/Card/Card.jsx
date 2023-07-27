@@ -29,9 +29,11 @@ const concatenatedGenres = props.genre.reduce((accumulator, currentGenre) => {
         <div onClick={() =>props.handleClick(props.item.id)} key={props.item.id} className="podcast">
         <img src={props.item.image} className="podcast--image"/>
         <h3 className="podcast--title">{props.item.title}</h3>
+        <div className="info--container">
         <p className="podcast--seasons">Seasons: {props.item.seasons}</p>
         <p className="podcast--date" >Last Update: {changeDateFormat(props.item.updated)}</p>
-        <p className="podcast--genres">Genres: {concatenatedGenres}</p>
+        <p className="podcast--genres">{concatenatedGenres}</p>
+        </div>
     </div>
     </Link>
     

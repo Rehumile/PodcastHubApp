@@ -241,8 +241,9 @@ export default function PodcastPreview({ handleOpenCard, session }) {
         </div>
       ))}
     </Slider> */}
-      <Container sx={{ mt: "6rem" }}>
+      <Container sx={{ mt: "8rem" }}>
         <>
+       <div>Carousel</div>
           <div className="filters">
             <Search
               podcastShows={podcastShows}
@@ -252,12 +253,13 @@ export default function PodcastPreview({ handleOpenCard, session }) {
             <div className="filter--sort">
               <SortFilter sortPodcast={sortPodcast} />
             </div>
-          </div>
-
-          <GenreFilter
+            <GenreFilter
             selectedGenre={selectedGenre}
             setSelectedGenre={setSelectedGenre}
           />
+          </div>
+
+          
 
           <div className="shows-list">{cards}</div>
           {loadingMoreShows ? (

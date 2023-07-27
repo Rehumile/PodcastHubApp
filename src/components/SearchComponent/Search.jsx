@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import Fuse from "fuse.js"
+import '../SearchComponent/Search.css'
 
 export default function Search({ podcastShows, setSearchResults}) {
 

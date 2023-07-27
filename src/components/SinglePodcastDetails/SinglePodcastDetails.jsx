@@ -114,8 +114,7 @@ const clampText = (text, maxLength) => {
   }
 
   return (
-    <>
-    <Container>
+    <div className="single-show">
     
         <Link to='/'>
      <GoBack onGoBack={onGoBack}/></Link>  
@@ -134,15 +133,14 @@ const clampText = (text, maxLength) => {
               </p>
             </p>
             
-           <p className="show--descrip">{singleShow.description}</p><span className="bold">Show More</span>
+           <p className="show--descrip">{clampText(singleShow.description)}</p><span className="bold">Show More</span>
           </div>
         </div>
 
    )}
         
 
-        <div className="season--details">
-          <div>
+        <div className="season--form">
             {
               <form>
                 <select
@@ -159,31 +157,34 @@ const clampText = (text, maxLength) => {
                 </select>
               </form>
             }
-          </div>
         </div>
 
           {selectedSeasonData && (
           <>
-            <div>Episodes ({selectedSeasonData.episodes.length})</div>
+          <div className="season--details" >
+            <p>Episodes ({selectedSeasonData.episodes.length})</p>
 
             <h2 className="season--title">{selectedSeasonData.title}</h2>
+            </div>
             {selectedSeasonData.episodes.map((episode) => (
+
               <div key={episode.episode} className="episodes">
-                <h4 className="episode--number">{episode.episode}</h4>
+                <div className="episodeNum--Title">
+                <p className="episode--number">{episode.episode}</p>
+                <h6 className="title">{episode.title}</h6>
+                </div>
+                 <p className="description">{clampText(episode.description)}</p>
+                 
+                 <div className="episode--buttons">
                 <div onClick={()=>playSelectedEpisode(episode)} className="play--button">
                   <IconButton
                     aria-label="playbutton"
                     size="large"
-                    sx={{ color: "#008033", fontSize: "5.5rem" }}
+                    sx={{ color: "#008033", fontSize: "2rem" }}
                   >
                     <SmartDisplayOutlinedIcon fontSize="inherit" />
                   </IconButton>
                 </div> 
-                <div className="episode--details">
-                  <div className="title-and-description">
-                    <h3 className="title">{episode.title}</h3>
-                    <p className="description">{episode.description}</p>
-                  </div>
                    <div onClick={()=>(toggleFavourite(singleShow, selectedSeasonData, episode))}>
                     <IconButton
                       sx={{
@@ -192,10 +193,7 @@ const clampText = (text, maxLength) => {
                         color: "red",
                       }}
                       aria-label="favoourite"
-                      size="large"
-                      
-                      
-                    >
+                      size="small">
                       <FavoriteIcon fontSize="inherit" />
                     </IconButton>
                   </div> 
@@ -204,7 +202,7 @@ const clampText = (text, maxLength) => {
             ))}
           </>
         )}
-      </Container> 
-    </>
+      </div>
+    
   );
 }

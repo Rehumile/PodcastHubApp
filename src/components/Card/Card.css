@@ -1,3 +1,4 @@
+
 .podcast {
     border: 1px solid #ccc;
     width: 18rem;
@@ -24,4 +25,46 @@
     width: 100%;
     border-radius: 9px;
     margin-bottom: 9px;
+}
+
+.podcast--title, .podcast--seasons, .podcast--date, .podcast--genres{
+    margin: 0;
+    margin-bottom: 0.6rem;
+}
+.podcast--title{
+    margin-top: 1rem;
+    font-weight: 400;
+    font-size: 1.5rem;
+    
+}
+.podcast--genres{
+    font-weight: 700;
+}
+
+.info--container{
+    border-top: 1px solid #ccc;
+   
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+@media only screen and (max-width: 375px){
+   
+}
+
+@media only screen and (max-width: 425px){
+    .podcast{
+        height: 24rem;
+       
+    }
+    .podcast:hover {
+        transform:none;
+       
+    }
+
+    .podcast--image {
+        width: 10rem;
+        justify-self: center;
+        align-self: flex-start;
+    }
 }

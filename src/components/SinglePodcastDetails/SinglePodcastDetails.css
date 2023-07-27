@@ -1,65 +1,86 @@
-
+.single-show{
+    width: 100%;
+}
 
 .show{
     display: flex;
-    justify-content: flex-start;
-    column-gap: 1.5rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-top: 3rem;
-    margin-left: 3rem;
+    padding-bottom: 3rem;
     border-bottom: 1px solid #ccc;
 }
 
 .show--image {
-    width: 200px;
-    height: 300px;
+    width: 10rem;
+    height: 10rem;
     border-radius: 9px;
-    margin-bottom: 9px;
+
+}
+.show--Title{
+ margin-top: 1rem;
 }
 
 .details--container {
-   
-    width: 50%;
+    width: 70%;
     padding-left: 1rem;
     padding-top: 0;
+}
+
+.episodes{
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+}
+
+.episodeNum--Title {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+}
+.title{
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.5rem;
+}
+.episode--number{
+    vertical-align: middle;
+}
+.description{
+    text-align: center;
+}
+
+.episode--buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.season--form{
+    display: flex;
+justify-content: center;
+    margin-top: 2rem;
+    
+}
+.season--form  select {
+    height: 2rem;
+    width: 6rem
 }
 
 .season--details{
     display: flex;
     justify-content: space-between;
-    width: 90%;
-    margin-left: 3rem;
-    margin-top: 1rem;
-}
-
-.season--title {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 0;
-}
-
-.episodes {
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    background-color: #1C2321;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 3rem;
-    margin-bottom:  5rem;
-    border-radius: 10px;
-}
-
-.episode--number {
-    font-size: 2rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-}
-
-.play--button {
-
     
 }
+
+
+
+
+
 
 .episode--details {
     display: flex;
@@ -67,25 +88,19 @@
     align-items: center;
 }
 
-.title-and-description {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 80%;
-    padding: 1rem;
-    margin-left: 2rem;
-  /* border: 1px solid #ccc */
-}
-.title {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    font-size: 1.5rem;
-}
-.description {
-    margin-top: 0;
-}
+
 
 .bold{
     font-weight: bold;
+} 
+
+@media only screen and (min-width: 1024px) {
+    
+.episodeNum--Title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+}
 }

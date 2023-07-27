@@ -1,6 +1,11 @@
 .filter--search{
     margin-left: 4rem;
+    font-weight: 100;
     
+}
+
+.filter--search > label {
+    font-weight: 400;
 }
 .filter--search input{
     margin-bottom: 1rem;
@@ -8,4 +13,22 @@ background-color: transparent;
 border: 1px solid #003EAB;
 border-radius: 2rem;
 height: 2rem
+}
+
+@media only screen and (max-width: 375px) {
+  
+}
+
+@media only screen and (max-width: 425px){
+    .filter--search{
+        margin-left: 0;
+       
+    }
+    .filter--search > label {
+         font-size: 1rem;
+         
+    }
+    .filter--search input{
+        height: 1.5rem
+    }
 }
