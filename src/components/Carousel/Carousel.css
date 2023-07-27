@@ -1,0 +1,31 @@
+.show-carousel {
+    width: 100%;
+    box-shadow: 0px 0px 15px #8b8b8b;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.carousel-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.carousel-image {
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.show-title {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.show-seasons {
+    font-size: 14px;
+    color: #888;
+}
