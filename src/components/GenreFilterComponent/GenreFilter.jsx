@@ -1,5 +1,4 @@
 import React from "react";
-import { genres } from "../../utils/api";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';

@@ -1,71 +1,69 @@
 import { useState } from "react";
-import {supabase} from '../../supabaseClient'
+import { supabase } from "../../supabaseClient";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-// import '../Authentication/Auth.css'
-import '../Authentication/LoginUser.css'
+import "../Authentication/LoginUser.css";
 
-export default function LoginUser({setSession}) {
-    const [loading, setLoading] = useState(false)
-    // set state for email
-    const [formData, setFormData] = useState({
-      email: '',
-      password: ''
-    })
-    const navigate = useNavigate()
-  
+export default function LoginUser({ setSession }) {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
 
-    const handleChange =(event) => {
-     setFormData((prevFormData) => {
+  const handleChange = (event) => {
+    setFormData((prevFormData) => {
       return {
         ...prevFormData,
-        [event.target.name] : event.target.value
-      }
-     })
-    }
-    
-    async function handleSubmit(event){
-      event.preventDefault()
-try {
- const {data, error} = await supabase.auth.signInWithPassword({
-    email: formData.email,
-    password: formData.password
- }) 
-    navigate('/')
- setSession(data)
- console.log(data) // this will log the session. access token to give you access to particular website
- //session refers to the authenticated state of a user
- if (error) throw error
- 
-} catch (error) {
-  alert(error)
-}
-    }
-  
-    return (
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
 
-      <>
-      <div className="auth--form" >
+  async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+      navigate("/");
+      setSession(data);
+
+      if (error) throw error;
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  return (
+    <>
+      <div className="auth--form">
         <div className="form--info">
-        <p className="podcast--title">Podcast Hub</p>
-        <p className="text">Want to Log in?</p>
+          <p className="podcast--title">Podcast Hub</p>
+          <p className="text">Want to Log in?</p>
         </div>
         <form onSubmit={handleSubmit}>
-        <div className="inputBox">
-<input  name="email" onChange={handleChange}/>
+          <div className="inputBox">
+            <input name="email" onChange={handleChange} />
             <span>Email</span>
           </div>
           <div className="inputBox">
-<input type="password" name="password" onChange={handleChange}/>
+            <input type="password" name="password" onChange={handleChange} />
             <span>Password</span>
           </div>
-      
-      
-      <button className="submit--button" type="submit">Submit</button>
-      </form>
-      <p>Do not have an account? <Link to='/signup'><span className="Link">Sign Up</span></Link></p>
 
+          <button className="submit--button" type="submit">
+            Submit
+          </button>
+        </form>
+        <p>
+          Do not have an account?{" "}
+          <Link to="/signup">
+            <span className="Link">Sign Up</span>
+          </Link>
+        </p>
       </div>
-      </>
-    )
-  }
+    </>
+  );
+}

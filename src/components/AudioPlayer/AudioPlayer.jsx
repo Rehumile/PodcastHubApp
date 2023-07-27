@@ -16,10 +16,17 @@ export default function AudioPlayer() {
   const [timeProgress, setTimeProgress]=useState(0);
   const [duration, setDuration] = useState(0)
 
-  //set stae to track episode progress
+  //set state to track episode progress
   const [episodeProgress, setEpisodeProgress] = useState({})
 
+  //set state for completed episodes 
+  const [completedEpisodes, setCompletedEpisode] = useState(()=> {
+    const storedCompletedEpisodes = localStorage.getItem('completedEpisodes')
+    return storedCompletedEpisodes ? JSON.parse (storedCompletedEpisodes): []
+  });
+
 const currentEpisode = useSelector((state)=> state.audioPlayer.selectedEpisode)
+
 
 const audioRef = useRef(null)
 const progressBarRef=useRef()
@@ -134,15 +141,29 @@ if(currentEpisode) {
     audioRef.current.currentTime = newCurrentTime
   }
 
+  const saveLastPlayedProgress = () => {
+    if (currentEpisode){
+      const currentTime = audioRef.current.currentTime
+      updateProgress(currentEpisode.episode, currentTime)
+      localStorage.setItem('lastPlayedProgress', JSON.stringify(episodeProgress))
+    }
+  }
+
   const handleCloseAudioPlayer = () => {
     audioRef.current.pause()
     setIsPlaying(false)
     if (currentEpisode) {
-      updateProgress(currentEpisode.id, audioRef.current.currentTime);
+      updateProgress(currentEpisode.episode, audioRef.current.currentTime);
       localStorage.setItem('lastPlayedEpisode', JSON.stringify(currentEpisode));
     }
-   
-   
+    saveLastPlayedProgress()
+  }
+
+  const handleEpisodeCompletion = () => {
+    if (currentEpisode && !completedEpisodes.includes(currentEpisode.title)) {
+      setCompletedEpisode([...completedEpisodes, currentEpisode.title])
+      localStorage.setItem('completedEpisodes', JSON.stringify(completedEpisodes))
+    }
   }
 
 

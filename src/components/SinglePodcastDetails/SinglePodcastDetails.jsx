@@ -2,13 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import GoBack from "../GoBack/GoBack";
-import Container from "@mui/material/Container";
 import "../SinglePodcastDetails/SinglePodcastDetails.css";
- import IconButton from "@mui/material/IconButton";
- import FavoriteIcon from "@mui/icons-material/Favorite";
- import SmartDisplayOutlinedIcon from "@mui/icons-material/SmartDisplayOutlined";
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import SmartDisplayOutlinedIcon from "@mui/icons-material/SmartDisplayOutlined";
+import { ColorRing } from "react-loader-spinner";
 
-export default function SinglePodcastDetails({ podcastId, onGoBack, toggleFavourite, playSelectedEpisode}) {
+export default function SinglePodcastDetails({
+  podcastId,
+  onGoBack,
+  toggleFavourite,
+  playSelectedEpisode,
+}) {
   // set state for the single show info
   const [singleShow, setSingleShow] = useState(null);
 
@@ -22,40 +27,25 @@ export default function SinglePodcastDetails({ podcastId, onGoBack, toggleFavour
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedSeasonData, setSelectedSeasonData] = useState(null);
 
-  //set state for whether text should be truncated or now
-  const [isWordsTruncated, setIsWordsTruncated] = useState(true)
-
   //fetch the data for single podcast
-   useEffect(() => {
-  const fetchSinglePodcast = async () => {
-    try {
-      const data = await fetch(
-        `https://podcast-api.netlify.app/id/${podcastId}`
-      );
-      const result = await data.json();
+  useEffect(() => {
+    const fetchSinglePodcast = async () => {
+      try {
+        const data = await fetch(
+          `https://podcast-api.netlify.app/id/${podcastId}`
+        );
+        const result = await data.json();
 
-      setSingleShow(result);
-      setLoadingDetails(false);
-    } catch (error) {
-      console.log(`ERROR ${error}`);
-      // setIsError(true);
-    }
-  };
+        setSingleShow(result);
+        setLoadingDetails(false);
+      } catch (error) {
+        console.log(`ERROR ${error}`);
+        // setIsError(true);
+      }
+    };
 
-  //render fetch podcast only once
- 
     fetchSinglePodcast();
   }, [podcastId]);
-
-
-  // useEffect(() => {
-  //     if (singleShow) {
-  //       const seasonData = singleShow.seasons.find(
-  //         (season) => season.season === selectedSeason
-  //       );
-  //       setSelectedSeasonData(seasonData);
-  //     }
-  //   }, [selectedSeason, singleShow]);
 
   useEffect(() => {
     if (singleShow && singleShow.seasons) {
@@ -64,7 +54,7 @@ export default function SinglePodcastDetails({ podcastId, onGoBack, toggleFavour
       );
       setSelectedSeasonData(seasonData);
     }
-  }, [selectedSeason, singleShow])
+  }, [selectedSeason, singleShow]);
 
   // Handles the selection of a season's data in a show, and sets it to state
   const handleSelectSeason = (event) => {
@@ -78,50 +68,37 @@ export default function SinglePodcastDetails({ podcastId, onGoBack, toggleFavour
     }
   };
 
-  
-
-  const handleToggleDescription =() => {
-    setIsWordsTruncated(!isWordsTruncated);
+  if (loadingDetails) {
+    return (
+      <div className="loading--icon">
+        <ColorRing
+          visible={true}
+          height="150"
+          width="150"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          colors={["#003EAB", "#008033", "#EEF3F6", "#003EAB", "#008033"]}
+        />
+      </div>
+    );
   }
-  const MAX_CHARACTERS = 200
 
-  
-//   let descriptionElement;
-//   if (singleShow.description.length >= MAX_CHARACTERS) {
-//     if (isWordsTruncated) {
-//       descriptionElement = (
-//         <>
-//           <p>{singleShow.description.substring(0, MAX_CHARACTERS)}...</p>
-//           <button onClick={handleToggleDescription}>Show More</button>
-//         </>
-//       );
-//     } else {
-//       descriptionElement = (
-//         <>
-//           <p>{singleShow.description}</p>
-//           <button onClick={handleToggleDescription}>Show Less</button>
-//         </>
-//       );
-//     }
-//   } else {
-//     descriptionElement = <p>{singleShow.description}</p>;
-//   }
-const clampText = (text, maxLength) => {
-    if (text.length <= maxLength) {
+  const shortenDescription = (text, maxCharacters) => {
+    if (text.length <= maxCharacters) {
       return text;
     }
-    return text.slice(0, maxLength) + "...";
-  }
+    return text.slice(0, maxCharacters) + "...";
+  };
 
   return (
     <div className="single-show">
-    
-        <Link to='/'>
-     <GoBack onGoBack={onGoBack}/></Link>  
-       
-        
-  {singleShow && (
-<div className="show" key={singleShow.id}>
+      <Link to="/">
+        <GoBack onGoBack={onGoBack} />
+      </Link>
+
+      {singleShow && (
+        <div className="show" key={singleShow.id}>
           <img className="show--image" src={singleShow.image} />
           <div className="details--container">
             <h1 className="show--Title">{singleShow.title}</h1>
@@ -132,51 +109,62 @@ const clampText = (text, maxLength) => {
                   : "Seasons data not available"}
               </p>
             </p>
-            
-           <p className="show--descrip">{clampText(singleShow.description)}</p><span className="bold">Show More</span>
+
+            <p className="show--descrip">
+              {shortenDescription(singleShow.description)}
+            </p>
+            <span className="bold">Show More</span>
           </div>
         </div>
+      )}
 
-   )}
-        
+      <div className="season--form">
+        {
+          <form>
+            <select
+              onChange={handleSelectSeason}
+              value={selectedSeason}
+              name="Seasons"
+            >
+              {singleShow &&
+                singleShow.seasons.map((season) => (
+                  <option key={season.season} value={season.season}>
+                    Season {season.season}
+                  </option>
+                ))}
+            </select>
+          </form>
+        }
+      </div>
 
-        <div className="season--form">
-            {
-              <form>
-                <select
-                  onChange={handleSelectSeason}
-                  value={selectedSeason}
-                  name="Seasons"
-                >
-                  {singleShow &&
-                    singleShow.seasons.map((season) => (
-                      <option key={season.season} value={season.season}>
-                        Season {season.season}
-                      </option>
-                    ))}
-                </select>
-              </form>
-            }
-        </div>
-
-          {selectedSeasonData && (
-          <>
-          <div className="season--details" >
+      {selectedSeasonData && (
+        <>
+          <div className="season--details">
             <p>Episodes ({selectedSeasonData.episodes.length})</p>
 
             <h2 className="season--title">{selectedSeasonData.title}</h2>
-            </div>
-            {selectedSeasonData.episodes.map((episode) => (
-
-              <div key={episode.episode} className="episodes">
-                <div className="episodeNum--Title">
+          </div>
+          {selectedSeasonData.episodes.map((episode) => (
+            <div key={episode.episode} className="episodes">
+              <div className="episodeNum--Title">
                 <p className="episode--number">{episode.episode}</p>
                 <h6 className="title">{episode.title}</h6>
-                </div>
-                 <p className="description">{clampText(episode.description)}</p>
-                 
-                 <div className="episode--buttons">
-                <div onClick={()=>playSelectedEpisode(episode, singleShow.id, selectedSeasonData)} className="play--button">
+              </div>
+              <p className="description">
+                {shortenDescription(episode.description)}
+              </p>
+
+              <div className="episode--buttons">
+                <div
+                  onClick={() =>
+                    playSelectedEpisode(
+                      episode,
+                      singleShow.id,
+                      selectedSeasonData
+                    )
+                  }
+                  className="play--button"
+                >
                   <IconButton
                     aria-label="playbutton"
                     size="large"
@@ -184,25 +172,29 @@ const clampText = (text, maxLength) => {
                   >
                     <SmartDisplayOutlinedIcon fontSize="inherit" />
                   </IconButton>
-                </div> 
-                   <div onClick={()=>(toggleFavourite(singleShow, selectedSeasonData, episode))}>
-                    <IconButton
-                      sx={{
-                        m: "auto",
-                        mr: "3rem",
-                        color: "red",
-                      }}
-                      aria-label="favoourite"
-                      size="small">
-                      <FavoriteIcon fontSize="inherit" />
-                    </IconButton>
-                  </div> 
+                </div>
+                <div
+                  onClick={() =>
+                    toggleFavourite(singleShow, selectedSeasonData, episode)
+                  }
+                >
+                  <IconButton
+                    sx={{
+                      m: "auto",
+                      mr: "3rem",
+                      color: "red",
+                    }}
+                    aria-label="favoourite"
+                    size="small"
+                  >
+                    <FavoriteIcon fontSize="inherit" />
+                  </IconButton>
                 </div>
               </div>
-            ))}
-          </>
-        )}
-      </div>
-    
+            </div>
+          ))}
+        </>
+      )}
+    </div>
   );
 }

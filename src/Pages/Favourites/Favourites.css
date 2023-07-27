@@ -75,6 +75,13 @@ Url:hover {
      }
 }
 
+.error-info {
+    margin-top: 8rem;
+    border: 1px solid #ccc;
+    border-radius: 9px;
+    padding: 2rem;
+}
+
 /*
 
 

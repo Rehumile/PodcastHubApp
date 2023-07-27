@@ -11,7 +11,7 @@ import GenreFilter from "../../components/GenreFilterComponent/GenreFilter";
 import { ColorRing } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../../components/Carousel/Carousel";
-import Slider from "react-slick";
+
 
 
 export default function PodcastPreview({ handleOpenCard, session }) {
@@ -196,14 +196,17 @@ export default function PodcastPreview({ handleOpenCard, session }) {
   const showMoreButton = numOfVisibleShows <= filteredShowsByGenre.length;
   return (
     <>
+    <div className="intro--container">
       { session ? <h1 className='welcome'>Welcome Back, {session.user.user_metadata.full_name}👋🏽</h1> : <h1 className="welcome">Welcome to Podcast Hub👋🏽</h1>  }
       
-      {/* <button onClick={handleLogout}>Logout</button> */}
+       {session && <button onClick={handleLogout}>Logout</button> }
+    </div>
+      
 
       <Container sx={{ mt: "4rem" }}>
         <>
        <h1 className="text">Recommended for you..</h1>
-       <Carousel handleClick={handleOpenCard} podcastShows={shuffledPodcasts}/>
+        <Carousel handleClick={handleOpenCard} podcastShows={shuffledPodcasts}/> 
           <div className="filters">
             <Search
               podcastShows={podcastShows}

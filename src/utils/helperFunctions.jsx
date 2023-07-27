@@ -20,3 +20,6 @@ export const changeDateFormat =(date)=>{
   return `${year}/${month}/${day} ${hours}:${minutes}`;
 
   }
+
+
+  

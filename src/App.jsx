@@ -91,7 +91,7 @@ function App() {
 
   const addToFavouritesDatabase = async (favouriteEpisodeId) => {
     if (!session) {
-      console.log("User not authenticated")
+      alert("User not authenticated")
       return;
     }
     try {
@@ -169,6 +169,7 @@ function App() {
 
   const handleEpisode=(episode)=>{
     dispatch(selectedEpisode(episode))
+  
   }
 
 
@@ -185,11 +186,6 @@ function App() {
             path="/"
             element={<PodcastPreview handleOpenCard={handleOpenCard} session={session}/>}
           />
-    {/* <Route
-            exact
-            path="/"
-            element={<PodcastPreview handleOpenCard={handleOpenCard} />}
-          />*/}
  {selectedPodcastId && (
             <Route
               exact

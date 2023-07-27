@@ -44,6 +44,20 @@
     justify-content: center;
 }
 
+.intro--container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.intro--container button {
+    margin-top: 2rem;
+    width: 5rem;
+    height: 2rem;
+    color: white;
+    background-color: #008033;
+    border: none;
+}
+
 @media only screen and (max-width: 375px) {
     .filters{
         display: flex;
