@@ -11,10 +11,11 @@ export default function GenreFilter({selectedGenre, setSelectedGenre}) {
         setSelectedGenre(event.target.value);
       };
     return (
-        <div style={{width: '200px'}}>
-      <FormControl sx={{width: '200px', mt: '1rem', ml: '3.5rem'}}>
-        <InputLabel id="demo-simple-select-label">Genres</InputLabel>
+        <div>
+      <FormControl  sx={{width: '17rem', borderRadius: '5px'}}>
+        <InputLabel >Genres</InputLabel>
         <Select
+
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={selectedGenre}

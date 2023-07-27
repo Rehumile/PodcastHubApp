@@ -12,36 +12,17 @@ h1 {
 }
 
 .filters {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding-bottom: 1.5rem;
-    padding-top: 1.5rem;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #ccc
-}
-.filters label {
-    margin-right: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    vertical-align: middle;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   row-gap: 1rem;
+   padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc
 }
 
-.filter--search{
-    margin-left: 4rem;
-    
-}
-.filter--search input{
-    margin-bottom: 1rem;
-background-color: transparent;
-border: 1px solid #003EAB;
-border-radius: 2rem;
-height: 2rem
-}
-.filter--sort {
-    margin-right: 4rem;
-}
+
 
 .shows-list {
     display: flex;
@@ -74,4 +55,6 @@ height: 2rem
             flex-direction: column;
             justify-content: center;
         }
+
     }
+    

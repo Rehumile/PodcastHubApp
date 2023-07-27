@@ -249,10 +249,7 @@ export default function PodcastPreview({ handleOpenCard, session }) {
               podcastShows={podcastShows}
               setSearchResults={setSearchResults}
             />
-
-            <div className="filter--sort">
               <SortFilter sortPodcast={sortPodcast} />
-            </div>
             <GenreFilter
             selectedGenre={selectedGenre}
             setSelectedGenre={setSelectedGenre}
