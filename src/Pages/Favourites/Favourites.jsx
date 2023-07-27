@@ -17,7 +17,11 @@ import { supabase } from '../../supabaseClient'
 //if user has not signed in --> show message sign in to view your favourites
 // if user has signed in --> fetch fav episodes from supabase database and render to page
 
-export default function Favourites({FavouritesEpisodesLists, toggleFavourite, onGoBack, playSelectedEpisode, session}) {
+export default function Favourites({FavouritesEpisodesLists, 
+  toggleFavourite, 
+  onGoBack, 
+  playSelectedEpisode, 
+  session}) {
     const [favouriteEpisodes ,setFavouriteEpisodes] = useState([])
 
     // set state for loading favourite episodes
@@ -29,118 +33,63 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
   //set state for sorted podcasts
   const [sortedPodcasts, setSortedPodcasts] = useState("");
 
-  
+ 
 
    // Fetch favorite episodes data from the composite key that is saved in favorites. Made from show ID, season number and episode number
-  //  useEffect(() => {
-  //   const fetchFavoriteEpisodes = async () => {
-  //     const episodes = [];
+   useEffect(() => {
+    const fetchFavoriteEpisodes = async () => {
 
-  //     // Loop through composite keys in favorites array
-  //     for (let episode of FavouritesEpisodesLists) {
-
-  //       const [podcastId,seasonNum ,episodeNum ] = episode.favouriteId.split('-') 
-
-  //       // Fetch and store show data in state
-  //       try {
-  //         const response = await fetch(
-  //           `https://podcast-api.netlify.app/id/${podcastId}`
-  //         );
-  //         const data = await response.json();
-  //         const seasonData = data.seasons.find(
-  //           (season) => season.season === parseInt(seasonNum)
-  //         );
-
-  //         // Build object for favorite data
-  //         const favObject = {
-  //           ID : episode.favouriteId,
-  //           show: data,
-  //           season: seasonData,
-  //           episode: seasonData.episodes.find(
-  //             (episode) => episode.episode === parseInt(episodeNum)
-  //           ),
-  //           dateAdded: episode.dateAdded
-  //         };
-
-  //         episodes.push(favObject);
-  //         setLoadingDetails(false)
-  //       } catch (error) {
-  //         console.error(
-  //           "Issue fetching this show's details. Please try again.",
-  //           error
-  //         );
-  //       }
-  //     }
-  //     setFavouriteEpisodes(episodes);
-  //   };
-
-  //   fetchFavoriteEpisodes();
-  // }, [FavouritesEpisodesLists]);
-
-  const fetchFavouriteEpisodesFromDatabase = async () => {
-    if (!session) {
-      return (
-        <h1> Head to login page or signup to get access to favourites</h1>
-      )
-    }
-
-    try {
-      const {data, error} = await supabase
-      .from('favourites')
-      .select('*')
-      .eq('id', session.user.id)
-      if (error) {
-        console.error('Error fetching favorite episodes:', error);
-      } else {
-        console.log(data)
-      //   const episodes = [];
-
-      // // Loop through composite keys in favorites array
-      // for (let episode of data) {
-
-      //   const [podcastId,seasonNum ,episodeNum ] = episode.favouriteId.split('-') 
-
-      //   // Fetch and store show data in state
-      //   try {
-      //     const response = await fetch(
-      //       `https://podcast-api.netlify.app/id/${podcastId}`
-      //     );
-      //     const data = await response.json();
-      //     const seasonData = data.seasons.find(
-      //       (season) => season.season === parseInt(seasonNum)
-      //     );
-
-      //     // Build object for favorite data
-      //     const favObject = {
-      //       ID : episode.favouriteId,
-      //       show: data,
-      //       season: seasonData,
-      //       episode: seasonData.episodes.find(
-      //         (episode) => episode.episode === parseInt(episodeNum)
-      //       ),
-      //       dateAdded: episode.dateAdded
-      //     };
-
-      //     episodes.push(favObject);
-      //     setLoadingDetails(false)
-      //   } catch (error) {
-      //     console.error(
-      //       "Issue fetching this show's details. Please try again.",
-      //       error
-      //     );
-      //   }
-      // }
-      // setFavouriteEpisodes(episodes);
     
-      }
-    } catch (error) {
-      console.error('Error fetching favorite episodes:', error.message);
-    }
-  }
+      const episodes = [];
 
-  useEffect(()=> {
-    fetchFavouriteEpisodesFromDatabase()
-  },[session])
+      // Loop through composite keys in favorites array
+      for (let episode of FavouritesEpisodesLists) {
+
+        const [podcastId,seasonNum ,episodeNum ] = episode.favourite_id.split('-') 
+
+        // Fetch and store show data in state
+        try {
+          const response = await fetch(
+            `https://podcast-api.netlify.app/id/${podcastId}`
+          );
+          const data = await response.json();
+          const seasonData = data.seasons.find(
+            (season) => season.season === parseInt(seasonNum)
+          );
+
+          // Build object for favorite data
+          const favObject = {
+            ID : episode.favouriteId,
+            show: data,
+            season: seasonData,
+            episode: seasonData.episodes.find(
+              (episode) => episode.episode === parseInt(episodeNum)
+            ),
+            dateAdded: episode.date_added
+          };
+
+          episodes.push(favObject);
+          setLoadingDetails(false)
+        } catch (error) {
+          console.error(
+            "Issue fetching this show's details. Please try again.",
+            error
+          );
+        }
+      }
+      setFavouriteEpisodes(episodes);
+    };
+
+    fetchFavoriteEpisodes();
+  }, [FavouritesEpisodesLists]);
+  
+  if (!session) {
+    return (
+      <h1> Head to login page or signup to get access to favourites</h1>
+    )
+  } 
+  
+
 
   const sortPodcast = (order) => {
     setSortedPodcasts(order);
@@ -180,11 +129,7 @@ export default function Favourites({FavouritesEpisodesLists, toggleFavourite, on
 //     )
 //   }
   
-if (!favouriteEpisodes) {
-  return (
-    <h1>Havent added any episodes yet. Go discover Podcasts to listen to in Home Page !</h1>
-  )
-}
+
 
 
  
@@ -195,13 +140,11 @@ if (!favouriteEpisodes) {
      <GoBack onGoBack={onGoBack}/></Link> 
      {session && <p>Here are your favourites, {session.user.user_metadata.full_name}</p>}
     
-        
+        <SortFilter sortPodcast={sortPodcast}/>
             <h1 className='heading'>Favourites</h1>
             {favouriteEpisodes.map((episode) => (
 
                 <>
-                <SortFilter sortPodcast={sortPodcast}/>
-              
                 <div key={episode.ID} className='fav--episode'>
                     <img className='fav--image' src={episode.show.image}/>
                     <div className='fav--details'>

@@ -31,9 +31,9 @@ function App() {
   const dispatch = useDispatch();
 
 
-  if(session) {
-    sessionStorage.setItem('token', JSON.stringify(session))
-  }
+  // if(session) {
+  //   sessionStorage.setItem('token', JSON.stringify(session))
+  // }
    
   // useEffect(() => {
   //   if(sessionStorage.getItem('token')) {
@@ -42,22 +42,22 @@ function App() {
   //   }
   // })
 
-//   useEffect(() => {
-    
-// const { data, error } =  supabase.auth.getSession()
-
-//     console.log(data)
-//   }, [])
+  // render the favourite episodes from database if user is logged in
+  useEffect(() => {
+    fetchFavouriteEpisodesFromDatabase()
+  }, [session]);
 
 
 
   //*****retrieve the last played episode from local storage when app loads
-  // useEffect(()=> {
-  //   const lastPlayedEpisode = getSavedLastPlayedEpisode();
-  //   if(lastPlayedEpisode) {
-  //     dispatch(selectedEpisode(lastPlayedEpisode))
-  //   }
-  // },[])
+  useEffect(()=> {
+    const lastPlayedEpisode = getSavedLastPlayedEpisode();
+    if(lastPlayedEpisode) {
+      dispatch(selectedEpisode(lastPlayedEpisode))
+    }
+  },[])
+
+ 
 
   const handleOpenCard = async (showId) => {
     setSelectedPodcastId(showId);
@@ -69,28 +69,26 @@ function App() {
 
   const handleTogglefavourite = (singlePodcast, season, episode) => {
     const favouriteId = `${singlePodcast.id}-${season.season}-${episode.episode}`;
-//if user has not signed --> direct to sign in page 
     if (favourites.some((episode) => episode.favouriteId === favouriteId)) {
-      removeFavourite(favouriteId);
       removeFavouriteFromDatabase(favouriteId)
     } else {
-      addFavouriteToState(favouriteId);
       addToFavouritesDatabase(favouriteId)
     }
   };
 
-  const addFavouriteToState = (id) => {
-    const timeAdded= new Date()
-    const favouriteEpisode = {
-      favouriteId: id,
-      dateAdded: timeAdded,
-    };
-    const newFavouritesList = [...favourites, favouriteEpisode];
-    setFavourites(newFavouritesList);
-   // localStorage.setItem("favoriteEpisodes", JSON.stringify(newFavouritesList));
-    console.log("added");
-    // add data to supabase
-  };
+  // const addFavouriteToState = (id) => {
+  //   const timeAdded= new Date()
+  //   const favouriteEpisode = {
+  //     favouriteId: id,
+  //     dateAdded: timeAdded,
+  //   };
+  //   const newFavouritesList = [...favourites, favouriteEpisode];
+  //   setFavourites(newFavouritesList);
+  //  // localStorage.setItem("favoriteEpisodes", JSON.stringify(newFavouritesList));
+  //   console.log("added");
+  //   // add data to supabase
+  // };
+
   const addToFavouritesDatabase = async (favouriteEpisodeId) => {
     if (!session) {
       console.log("User not authenticated")
@@ -98,36 +96,38 @@ function App() {
     }
     try {
       const favouriteEpisode = {
+        favourite_id: favouriteEpisodeId,
         id: session.user.id,
         date_added: new Date(),
-        favourite_id: favouriteEpisodeId
+        
       }
       const {data, error} = await supabase
-      .from('favourite_episodes')
+      .from('favourites')
       .insert([favouriteEpisode])
       if (error){
         console.error('error saving episode to favourites.' ,error)
       } else {
         console.log('episode is added to favourites', data)
+        fetchFavouriteEpisodesFromDatabase()
       }
     } catch (error) {
       console.error('error saving to favourites', error.message)
     }
   }
 
-  const removeFavourite = (id) => {
-    const newFavouritesList = favourites.filter((favourite)=> favourite.favouriteId !== id)
+  // const removeFavourite = (id) => {
+  //   const newFavouritesList = favourites.filter((favourite)=> favourite.favouriteId !== id)
 
-    setFavourites(newFavouritesList);
-   // localStorage.setItem("favoriteEpisodes", JSON.stringify(newFavouritesList));
-    console.log("removed");
+  //   setFavourites(newFavouritesList);
+  
+  //   console.log("removed");
 
-    // remove data from supabase
-  };
+  //   // remove data from supabase
+  // };
   const removeFavouriteFromDatabase = async (favouriteEpisodeId) => {
     try {
       const {data, error} = await supabase
-      .from('favourite_episodes')
+      .from('favourites')
       .delete()
       .eq('id', session.user.id) 
       .eq('favourite_id', favouriteEpisodeId)
@@ -135,12 +135,28 @@ function App() {
         console.error('Error removing from favorites:', error);
       } else {
         console.log('Episode removed from favorites:', data);
-       // fetchFavouriteEpisodes(); // Refresh the favorite episodes after removal
+    fetchFavouriteEpisodesFromDatabase() // Refresh the favorite episodes after removal
       }
     } catch (error) {
       console.error('Error removing from favorites:', error.message);
     }
   } 
+
+  const fetchFavouriteEpisodesFromDatabase = async () => {
+    if (!session) return; // Exit if the user is not authenticated
+
+      const { data, error } = await supabase
+        .from('favourites')
+        .select('*')
+        .eq('id', session.user.id); // Filter favorite episodes based on user ID
+
+      if (error) {
+        console.log('error fetching episodes', error)
+      } else {
+        setFavourites(data)
+      }
+  };
+ 
 
   const handleFavNavigation = () => {
     setViewFavouritesPage((prevState) => !prevState);
@@ -158,7 +174,6 @@ function App() {
 
   return (
     <>
-    <p>hello</p>
      <BrowserRouter>
      <Navbar 
      handleFavNavigation={handleFavNavigation}
@@ -185,11 +200,12 @@ function App() {
                   onGoBack={handleGoBack}
                   toggleFavourite={handleTogglefavourite}
                   playSelectedEpisode={handleEpisode}
+                  databaseEpisodes = {fetchFavouriteEpisodesFromDatabase()}
                 />
               }
             />
           )} 
-          {viewFavouritesPage && (
+          
             <Route
               exact
               path="/favourites"
@@ -202,7 +218,7 @@ function App() {
               session={session}
               />}
             />
-          )}
+        
 
    <Route exact path="/signup" element={<SignUp/>} />  
    <Route exact path="/login" element={<LoginUser setSession={setSession}/>} />  
@@ -211,33 +227,6 @@ function App() {
 <AudioPlayer/>
 
      </BrowserRouter> 
-      {/*
-        
-        <h1>Hello</h1>
-         
-          <Route
-            exact
-            path="/"
-            element={<PodcastPreview handleOpenCard={handleOpenCard} />}
-          />
-          
-          {viewFavouritesPage && (
-            <Route
-              exact
-              path="/favourites"
-              element={
-              <Favourites 
-              FavouritesEpisodesLists={favourites} 
-              toggleFavourite={handleTogglefavourite} 
-              onGoBack={handleGoBack}
-              playSelectedEpisode={handleEpisode}/>}
-            />
-          )}
-
-          <Route exact path="/login" element={<Login />} />
-        </Routes> 
-        <AudioPlayer EpisodeDetails={selectedEpisode}/>
-      </BrowserRouter>*/}
      
     </>
   );
