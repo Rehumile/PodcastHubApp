@@ -5,6 +5,7 @@ import '../AudioPlayer/AudioPlayer.css'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function AudioPlayer() {
 
@@ -14,6 +15,9 @@ export default function AudioPlayer() {
   //setting state to hold audio time
   const [timeProgress, setTimeProgress]=useState(0);
   const [duration, setDuration] = useState(0)
+
+  //set stae to track episode progress
+  const [episodeProgress, setEpisodeProgress] = useState({})
 
 const currentEpisode = useSelector((state)=> state.audioPlayer.selectedEpisode)
 
@@ -30,6 +34,16 @@ useEffect(() => {
     localStorage.setItem('lastPlayedEpisode', JSON.stringify(currentEpisode))
     }
   }, [currentEpisode]);
+
+  useEffect(() => {
+    // Retrieve episode progress from local storage
+    const lastPlayedProgress = JSON.parse(localStorage.getItem('lastPlayedProgress'));
+  
+    // Set the progress state with the retrieved data
+    if (lastPlayedProgress) {
+      setEpisodeProgress(lastPlayedProgress);
+    }
+  }, []);
 
   
 
@@ -48,6 +62,8 @@ useEffect(()=> {
     }
   };
 
+ 
+
   window.addEventListener('beforeunload', handleBeforeUnload);
   return () => {
     window.addEventListener('beforeunload', handleBeforeUnload)
@@ -55,7 +71,13 @@ useEffect(()=> {
 }, []);
 
 
-
+ //function to update progress of current episode
+  const updateProgress = (episodeId, progress) => {
+    setEpisodeProgress((prevProgress) => ({
+      ...prevProgress,
+      [episodeId]: progress
+    }))
+  }
 
 if(!currentEpisode) {
     return null
@@ -72,6 +94,10 @@ if(!currentEpisode) {
         } else {
           audioRef.current.pause();
           setIsPlaying(false);
+
+          if (currentEpisode) {
+            updateProgress(currentEpisode.episode, audioRef.current.currentTime);
+          }
           
         }
       }
@@ -89,9 +115,12 @@ if(!currentEpisode) {
 
   
   const onPlaying = () => {
-    const duration = audioRef.current.duration;
     const currentTime = audioRef.current.currentTime;
 setTimeProgress(currentTime)
+
+if(currentEpisode) {
+  updateProgress(currentEpisode.episode, currentTime)
+}
   }
 
   //function to be able to click on seek bar and it will go to specifc audio timeframe
@@ -108,6 +137,12 @@ setTimeProgress(currentTime)
   const handleCloseAudioPlayer = () => {
     audioRef.current.pause()
     setIsPlaying(false)
+    if (currentEpisode) {
+      updateProgress(currentEpisode.id, audioRef.current.currentTime);
+      localStorage.setItem('lastPlayedEpisode', JSON.stringify(currentEpisode));
+    }
+   
+   
   }
 
 
@@ -127,38 +162,51 @@ setTimeProgress(currentTime)
 
 
     return (
+   
         <div className="audio--player">
-            
-                <audio id="audioPlayer" ref={audioRef} onLoadedMetadata={onLoadedMetadata} onTimeUpdate={onPlaying}/> 
-            
-             <div className="audio--info">
-                <p className="episode--title"> Episode {currentEpisode.episode} - {currentEpisode.title}</p>
-             </div>
-
-                 <div className="progress">
-               
+        <div onClick={handleCloseAudioPlayer}>
+          <IconButton  sx={{fontSize: '0.5rem',color:'white'}}>
+            <CloseIcon/>
+          </IconButton>
+          </div>
+              <audio 
+              id="audioPlayer" 
+              ref={audioRef} 
+              onLoadedMetadata={onLoadedMetadata} 
+              onTimeUpdate={onPlaying}
+              currentTime={episodeProgress[currentEpisode?.id] || 0}
+              /> 
           
-            <div className="navigation--wrapper" ref={progressBarRef}>
-             <div className='seek-bar'style={{width: `${(timeProgress/ duration) * 100}%`}} onClick={clickSeekBar}></div> 
-            </div>
-            <div className="time--progress">
-                  <span className="time current">{formatTime(timeProgress)}</span>
-            <span className="time">{formatTime(duration)}</span>
-                </div> 
-            
-        </div>
-                
-         <div className="controls--wrapper">
-            <div onClick={togglePlayPause}>
-           <IconButton  sx={{fontSize: '2rem',color:'white'}}>
-               {isPlaying ?<PlayArrowIcon fontSize="inherit" /> : <PauseIcon fontSize="inherit"/>  } 
-            </IconButton>
-            </div>
+           <div className="audio--info">
+              <p className="episode--title"> Episode {currentEpisode.episode} - {currentEpisode.title}</p>
+           </div>
 
-        </div> 
-                 
+               <div className="progress">
              
+        
+          <div className="navigation--wrapper" ref={progressBarRef}>
+           <div className='seek-bar'style={{width: `${(timeProgress/ duration) * 100}%`}} onClick={clickSeekBar}></div> 
+          </div>
+          <div className="time--progress">
+                <span className="time current">{formatTime(timeProgress)}</span>
+          <span className="time">{formatTime(duration)}</span>
+              </div> 
           
-        </div>
+      </div>
+              
+       <div className="controls--wrapper">
+          <div onClick={togglePlayPause}>
+         <IconButton  sx={{fontSize: '2rem',color:'white'}}>
+             {isPlaying ?<PlayArrowIcon fontSize="inherit" /> : <PauseIcon fontSize="inherit"/>  } 
+          </IconButton>
+          </div>
+
+      </div> 
+               
+           
+        
+      </div>
+      
+        
     )
 }

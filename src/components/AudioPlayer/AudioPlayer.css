@@ -1,27 +1,22 @@
 .audio--player{
-    width: 100%;
+    min-width: 90%;
+    height: 10rem;
     position: fixed;
     bottom: 0;
-    left: 0;
-    padding: 0.5rem;
+    padding: 1rem;
     border: 1px solid rgb(141, 141, 141);
-    border-radius: 10px;
     color: rgb(218, 218, 218);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     background-color: #003EAB;
-    z-index: 999;
     transition: transform 0.3s ease;
     }
     
-    .audio--info{
-      align-self: center;
-    }
+    
     .episode--title {
       font-size: 1rem;
       font-weight: 600;
-      
+    text-align: center;
     }
     
     .navigation--wrapper {
@@ -32,10 +27,6 @@
       cursor: pointer;
     }
     
-    /* input[type="range"] {
-        --range-progress: 50%;
-        
-      } */
     
       .seek-bar{
         width: 0;
@@ -54,6 +45,12 @@
     
     .controls--wrapper{
       align-self: center;
+    }
+
+    @media only screen and (min-width: 768px) {
+      .audio--player{
+        width: 95%
+      }
     }
       
       
