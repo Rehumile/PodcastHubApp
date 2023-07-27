@@ -2,6 +2,7 @@ import { useState } from "react";
 import {supabase} from '../../supabaseClient'
 import { Link } from "react-router-dom";
 // import '../Authentication/Auth.css'
+import '../Authentication/LoginUser.css'
 
 export default function SignUp() {
     const [loading, setLoading] = useState(false)
@@ -45,14 +46,30 @@ try {
     return (
 
       <>
-      <div style={{marginTop: '5rem'}}>
+      <div className="auth--form">
+      <div className="form--info">
+        <p className="podcast--title">Podcast Hub</p>
+        <p className="text">Want to Sign Up?</p>
+        </div>
         <form onSubmit={handleSubmit}>
-      <input placeholder="Full Name" name="fullName" onChange={handleChange}/>
-      <input placeholder="Email" name="email" onChange={handleChange}/>
-      <input type="password"placeholder="Password" name="password" onChange={handleChange}/>
-      <button type="submit">Submit</button>
+          <div className="inputBox">
+          <input  name="fullName" onChange={handleChange}/>
+            <span>Full Name</span>
+          </div>
+          <div className="inputBox">
+            <input  name="email" onChange={handleChange}/>
+            <span>Email</span>
+          </div>
+          <div className="inputBox">
+<input type="password" name="password" onChange={handleChange}/>
+            <span>Password</span>
+          </div>
+      
+      
+      
+      <button className="submit--button" type="submit">Submit</button>
       </form>
-      <p>Already have an account? <Link to='/login'>Login</Link></p>
+      <p>Already have an account? <Link  to='/login'><span className="Link">Login</span></Link></p>
 
       </div>
       </>

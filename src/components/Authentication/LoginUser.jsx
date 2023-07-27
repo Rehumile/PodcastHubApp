@@ -3,6 +3,7 @@ import {supabase} from '../../supabaseClient'
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 // import '../Authentication/Auth.css'
+import '../Authentication/LoginUser.css'
 
 export default function LoginUser({setSession}) {
     const [loading, setLoading] = useState(false)
@@ -44,13 +45,25 @@ try {
     return (
 
       <>
-      <div style={{marginTop: '5rem'}}>
+      <div className="auth--form" >
+        <div className="form--info">
+        <p className="podcast--title">Podcast Hub</p>
+        <p className="text">Want to Log in?</p>
+        </div>
         <form onSubmit={handleSubmit}>
-      <input placeholder="Email" name="email" onChange={handleChange}/>
-      <input type="password"placeholder="Password" name="password" onChange={handleChange}/>
-      <button type="submit">Submit</button>
+        <div className="inputBox">
+<input  name="email" onChange={handleChange}/>
+            <span>Email</span>
+          </div>
+          <div className="inputBox">
+<input type="password" name="password" onChange={handleChange}/>
+            <span>Password</span>
+          </div>
+      
+      
+      <button className="submit--button" type="submit">Submit</button>
       </form>
-      <p>Do not have an account? <Link to='/signup'>Sign Up</Link></p>
+      <p>Do not have an account? <Link to='/signup'><span className="Link">Sign Up</span></Link></p>
 
       </div>
       </>
