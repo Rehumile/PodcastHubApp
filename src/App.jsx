@@ -6,7 +6,7 @@ import PodcastPreview from "./Pages/PodcastPreview/PodcastPreview";
  import Favourites from "./Pages/Favourites/Favourites";
 import { SignUp, LoginUser } from "./components/Authentication";
 import { getSavedLastPlayedEpisode } from "./utils/localStorage";
- import SinglePodcastDetails from "./components/SinglePodcastDetails/SInglePodcastDetails";
+ import SinglePodcastDetails from "./components/SinglePodcastDetails/SinglePodcastDetails";
   import AudioPlayer from './components/AudioPlayer/AudioPlayer'
  import { useDispatch } from "react-redux";
  import { selectedEpisode } from "./features/AudioPlayer/playerSlice";
