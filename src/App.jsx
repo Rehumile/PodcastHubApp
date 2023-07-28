@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import Navbar from "./components/NavbarComponent/Navbar";
+ import Navbar from "./components/NavbarComponent/Navbar";
 import PodcastPreview from "./Pages/PodcastPreview/PodcastPreview";
  import Favourites from "./Pages/Favourites/Favourites";
 import { SignUp, LoginUser } from "./components/Authentication";
@@ -24,23 +24,20 @@ function App() {
    const [session, setSession] = useState(false)
    const [user, setUser] = useState(null)
 
-  //set state for selected episode to be played
-  // const [selectedEpisode, setSelectedEpisode] = useState(null)
-
   
   const dispatch = useDispatch();
 
 
-  // if(session) {
-  //   sessionStorage.setItem('token', JSON.stringify(session))
-  // }
+  if(session) {
+    sessionStorage.setItem('token', JSON.stringify(session))
+  }
    
-  // useEffect(() => {
-  //   if(sessionStorage.getItem('token')) {
-  //     let data = JSON.parse(sessionStorage.getItem('token'))
-  //     setToken(data)
-  //   }
-  // })
+  useEffect(() => {
+    if(sessionStorage.getItem('session')) {
+      let data = JSON.parse(sessionStorage.getItem('session'))
+      setSession(data)
+    }
+  })
 
   // render the favourite episodes from database if user is logged in
   useEffect(() => {
@@ -49,7 +46,7 @@ function App() {
 
 
 
-  //*****retrieve the last played episode from local storage when app loads
+  //retrieve the last played episode from local storage when app loads
   useEffect(()=> {
     const lastPlayedEpisode = getSavedLastPlayedEpisode();
     if(lastPlayedEpisode) {
@@ -76,18 +73,6 @@ function App() {
     }
   };
 
-  // const addFavouriteToState = (id) => {
-  //   const timeAdded= new Date()
-  //   const favouriteEpisode = {
-  //     favouriteId: id,
-  //     dateAdded: timeAdded,
-  //   };
-  //   const newFavouritesList = [...favourites, favouriteEpisode];
-  //   setFavourites(newFavouritesList);
-  //  // localStorage.setItem("favoriteEpisodes", JSON.stringify(newFavouritesList));
-  //   console.log("added");
-  //   // add data to supabase
-  // };
 
   const addToFavouritesDatabase = async (favouriteEpisodeId) => {
     if (!session) {
@@ -115,15 +100,7 @@ function App() {
     }
   }
 
-  // const removeFavourite = (id) => {
-  //   const newFavouritesList = favourites.filter((favourite)=> favourite.favouriteId !== id)
 
-  //   setFavourites(newFavouritesList);
-  
-  //   console.log("removed");
-
-  //   // remove data from supabase
-  // };
   const removeFavouriteFromDatabase = async (favouriteEpisodeId) => {
     try {
       const {data, error} = await supabase
@@ -135,7 +112,7 @@ function App() {
         console.error('Error removing from favorites:', error);
       } else {
         console.log('Episode removed from favorites:', data);
-    fetchFavouriteEpisodesFromDatabase() // Refresh the favorite episodes after removal
+    fetchFavouriteEpisodesFromDatabase() 
       }
     } catch (error) {
       console.error('Error removing from favorites:', error.message);
@@ -143,12 +120,12 @@ function App() {
   } 
 
   const fetchFavouriteEpisodesFromDatabase = async () => {
-    if (!session) return; // Exit if the user is not authenticated
+    if (!session) return; 
 
       const { data, error } = await supabase
         .from('favourites')
         .select('*')
-        .eq('id', session.user.id); // Filter favorite episodes based on user ID
+        .eq('id', session.user.id); 
 
       if (error) {
         console.log('error fetching episodes', error)
@@ -165,29 +142,26 @@ function App() {
     setViewLoginPage((prevState) => !prevState);
   };
 
-
-
   const handleEpisode=(episode)=>{
     dispatch(selectedEpisode(episode))
-  
   }
 
 
   return (
     <>
+    <p>test</p>
      <BrowserRouter>
      <Navbar 
-     handleFavNavigation={handleFavNavigation}
+      handleFavNavigation={handleFavNavigation}
      handleLoginNavigation={handleLoginNavigation} />
-     <Routes>
-      {/*this states if the token is true then the user will be granted access to podcast previews */}
+    <Routes>
        <Route
             exact
             path="/"
             element={<PodcastPreview handleOpenCard={handleOpenCard} session={session}/>}
           />
  {selectedPodcastId && (
-            <Route
+             <Route
               exact
               path="/podcast/:id"
               element={
@@ -224,7 +198,7 @@ function App() {
 
      </BrowserRouter> 
      
-    </>
+    </> 
   );
 }
 

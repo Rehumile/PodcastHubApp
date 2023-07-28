@@ -38,8 +38,8 @@ export default function NavDrawer(props) {
           />
         </ListItem>
         <ListItem>
-          <ListItemIcon sx={{ color: "white" }}>
-            <FavoriteIcon />
+          <ListItemIcon >
+            <FavoriteIcon sx={{ color: "white" }}/>
           </ListItemIcon>
           <ListItemText
             sx={{ cursor: "pointer" }}

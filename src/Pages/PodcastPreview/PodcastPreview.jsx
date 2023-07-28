@@ -150,9 +150,6 @@ export default function PodcastPreview({ handleOpenCard, session }) {
     setPodcastShows(orderedShows);
   };
 
-  const handleGoBack = () => {
-    setSelectedPodcast(null);
-  };
 
   //this function will log user out of their account. remove token from session storage
   // and navigate back to login page
@@ -176,7 +173,7 @@ export default function PodcastPreview({ handleOpenCard, session }) {
   };
 
   let shuffledPodcasts = shuffleArray(filteredShowsByGenre);
-  //map over the shows
+
   const cards = filteredShowsByGenre.slice(0, numOfVisibleShows).map((show) => {
     const genreTitles = show.genres.map((genreId) => getGenreTitle(genreId));
 

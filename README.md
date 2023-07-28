@@ -1,8 +1,61 @@
-# React + Vite
+# REHSEK080_FTO2301_GroupB_RehumileSekoto_DWACapstone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+For my DWA project, I set out to build a user-friendly and engaging podcast app that allows users to explore an extensive collection of podcast shows, seamlessly play their favorite episodes, and keep track of the ones they love the most. 
 
-Currently, two official plugins are available:
+- [REHSEK080\_FTO2301\_GroupB\_RehumileSekoto\_DWACapstone](#rehsek080_fto2301_groupb_rehumilesekoto_dwacapstone)
+  - [Features](#features)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Technologies Used](#technologies-used)
+ ## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Simple and user Friendly
+- Ability to listen episodes
+- Browse thorugh varius Podcasts
+- Add epsiodes to favourites
+
+## Requirements
+
+The following is required: 
+AN IDE like Visual Studio Code
+[Basic HTML, CSS and Javascript Skills](https://developer.mozilla.org/en-US/docs/Learn)
+A browser like [Google Chrome](https://www.google.com/chrome/?brand=YTUH&gclid=Cj0KCQjwjryjBhD0ARIsAMLvnF96_IwtQD7sHuLw-nvKEuTyy2VbsEGU8C2Sf6RZ8Cn5VSN03UxtDDkaAh7ZEALw_wcB&gclsrc=aw.ds)
+
+## Installation 
+
+Let's get started!
+1. Clone the repo
+   ```
+   git clone
+   ```
+2. Navigate to Porject Directory
+    ```
+    cd PodcastHub
+    ```
+
+3. Install the dependcies
+
+```
+npm install
+```
+4. Launch the development server.
+
+```
+npm run dev
+```
+5. Open PodcastHub in your prefferd
+
+```
+http://localhost:5173
+```
+
+## Technologies Used
+
+- HTML
+- CSS
+- JavaScript
+- React JS
+- React Router 
+- Material UI
+- fuse.js
+- React Slick

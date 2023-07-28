@@ -198,21 +198,17 @@ export default function Favourites({
             <div className="favourite--buttons">
               <div
                 onClick={() => playSelectedEpisode(episode.episode)}
-                className="play--button"
-              >
+                className="play--button">
                 <IconButton
                   aria-label="playbutton"
                   size="large"
-                  sx={{ color: "#008033", fontSize: "3rem" }}
-                >
+                  sx={{ color: "#008033", fontSize: "3rem" }}>
                   <SmartDisplayOutlinedIcon fontSize="inherit" />
                 </IconButton>
               </div>
               <div
                 onClick={() =>
-                  toggleFavourite(episode.show, episode.season, episode.episode)
-                }
-              >
+                  toggleFavourite(episode.show, episode.season, episode.episode)}>
                 <IconButton
                   sx={{
                     color: "red",

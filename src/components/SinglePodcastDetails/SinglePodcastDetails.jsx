@@ -111,13 +111,12 @@ export default function SinglePodcastDetails({
             </p>
 
             <p className="show--descrip">
-              {shortenDescription(singleShow.description)}
+              {shortenDescription(singleShow.description, 200)}
             </p>
             <span className="bold">Show More</span>
           </div>
         </div>
       )}
-
       <div className="season--form">
         {
           <form>
@@ -151,7 +150,7 @@ export default function SinglePodcastDetails({
                 <h6 className="title">{episode.title}</h6>
               </div>
               <p className="description">
-                {shortenDescription(episode.description)}
+                {shortenDescription(episode.description,200)}
               </p>
 
               <div className="episode--buttons">

@@ -47,6 +47,20 @@
       align-self: center;
     }
 
+    .close--reset {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .reset {
+      width: 5rem;
+      height: 2rem;
+      color: white;
+      background-color: #008033;
+      border: none;
+    }
+
     @media only screen and (min-width: 768px) {
       .audio--player{
         width: 95%
