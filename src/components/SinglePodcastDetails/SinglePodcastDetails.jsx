@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import GoBack from "../GoBack/GoBack";
@@ -58,7 +57,7 @@ export default function SinglePodcastDetails({
     }
   }, [selectedSeason, singleShow]);
 
-  /
+  
   /**
    * Function that handles the selection of a season's data in a show, and sets it to state
    * @param {Object} event 
