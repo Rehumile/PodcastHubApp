@@ -8,9 +8,13 @@ import SmartDisplayOutlinedIcon from "@mui/icons-material/SmartDisplayOutlined";
 import { ColorRing } from "react-loader-spinner";
 
 export default function SinglePodcastDetails({
+  // eslint-disable-next-line react/prop-types
   podcastId,
+  // eslint-disable-next-line react/prop-types
   onGoBack,
+  // eslint-disable-next-line react/prop-types
   toggleFavourite,
+  // eslint-disable-next-line react/prop-types
   playSelectedEpisode,
 }) {
   // set state for the single show info
@@ -18,9 +22,6 @@ export default function SinglePodcastDetails({
 
   // set state for loading
   const [loadingDetails, setLoadingDetails] = useState(true);
-
-  // set state for when there is an error in fetching single podcast show
-  const [isError, setIsError] = useState(false);
 
   //set state for selected genre
   const [selectedSeason, setSelectedSeason] = useState(1);
