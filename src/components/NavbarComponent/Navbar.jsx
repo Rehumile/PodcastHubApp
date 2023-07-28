@@ -10,6 +10,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
 import NavDrawer from "./NavDrawer";
+import SoundLogo from "../../assets/sound.png";
+
 
 export default function Navbar({ handleFavNavigation, handleLoginNavigation }) {
   // state for keeping the value of the tab
@@ -51,7 +53,7 @@ export default function Navbar({ handleFavNavigation, handleLoginNavigation }) {
         <div className="nav--container">
           <div className="title--image">
             <Link to="/">
-              <img src="./public/images/sound.png" className="podcast--logo" />
+              <img src={SoundLogo} className="podcast--logo" />
             </Link>
             <p>Podcast Hub</p>
           </div>
