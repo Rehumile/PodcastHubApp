@@ -154,7 +154,8 @@ export default function PodcastPreview({ handleOpenCard, session }) {
   //this function will log user out of their account. remove token from session storage
   // and navigate back to login page
   const handleLogout = () => {
-    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("session");
+    alert('You have been logged out')
     navigate("/login");
   };
 

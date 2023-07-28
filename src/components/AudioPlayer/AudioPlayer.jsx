@@ -160,6 +160,8 @@ export default function AudioPlayer() {
     localStorage.removeItem("lastPlayedProgress");
     setCompletedEpisodes([]);
     setEpisodeProgress({});
+   
+   
   };
 
   // to display time duration in minutes and seconds
