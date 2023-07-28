@@ -21,11 +21,10 @@ export default function Navbar({ handleFavNavigation, handleLoginNavigation }) {
 
   const isMatch = useMediaQuery(theme.breakpoints.down("sm"));
 
-/**
- * Function to set value of the tab
- * @param {Number} newValue 
- */
-  const handleChange = ( newValue) => {
+
+ //Function to set value of the tab
+
+  const handleChange = ( event, newValue) => {
     setTabValue(newValue);
   };
 
@@ -37,8 +36,9 @@ export default function Navbar({ handleFavNavigation, handleLoginNavigation }) {
       navigate("/favourites");
       handleFavNavigation();
     }
-    if (tabValue === 2) navigate("/signup");
-    handleLoginNavigation();
+    if (tabValue === 2) {
+      navigate("/signup");
+    handleLoginNavigation();}
   }, [tabValue]);
 
   return (
