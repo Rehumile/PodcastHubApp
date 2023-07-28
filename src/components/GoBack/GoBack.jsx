@@ -1,8 +1,8 @@
-import React from "react";
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 import Button from '@mui/material/Button';
 import { Container } from "@mui/material";
 
+// eslint-disable-next-line react/prop-types
 export default function GoBack({onGoBack}) {
 
    

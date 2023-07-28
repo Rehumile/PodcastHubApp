@@ -14,6 +14,7 @@ import Carousel from "../../components/Carousel/Carousel";
 
 
 
+// eslint-disable-next-line react/prop-types
 export default function PodcastPreview({ handleOpenCard, session }) {
   //setting state for setting a selected podcast
   const [selectedPodcast, setSelectedPodcast] = useState(null);

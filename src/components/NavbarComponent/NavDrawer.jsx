@@ -7,6 +7,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@mui/icons-material/Home";
 
 export default function NavDrawer(props) {
+  // eslint-disable-next-line react/prop-types
   const { openDrawer, setOpenDrawer } = props;
 
   const navigate = useNavigate();

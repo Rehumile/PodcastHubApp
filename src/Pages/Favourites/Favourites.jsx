@@ -1,4 +1,4 @@
-import { useState, useEffect } from "React";
+import { useState, useEffect } from "react";
 import { Container } from "@mui/material";
 import "../Favourites/Favourites.css";
 import { Link } from "react-router-dom";
@@ -12,10 +12,15 @@ import SortFilter from "../../components/SortFilterComponent/SortFilter";
 import { ColorRing } from "react-loader-spinner";
 
 export default function Favourites({
+  // eslint-disable-next-line react/prop-types
   FavouritesEpisodesLists,
+  // eslint-disable-next-line react/prop-types
   toggleFavourite,
+  // eslint-disable-next-line react/prop-types
   onGoBack,
+  // eslint-disable-next-line react/prop-types
   playSelectedEpisode,
+  // eslint-disable-next-line react/prop-types
   session,
 }) {
   const [favouriteEpisodes, setFavouriteEpisodes] = useState([]);

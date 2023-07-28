@@ -2,6 +2,7 @@
 import { Button, ButtonGroup } from "@mui/material"
 import '../SortFilterComponent/SortFilter.css'
 
+// eslint-disable-next-line react/prop-types
 export default function SortFilter({ sortPodcast}) {
 
 

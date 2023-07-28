@@ -2,6 +2,7 @@ import { useState } from "react";
 import Fuse from "fuse.js";
 import "../SearchComponent/Search.css";
 
+// eslint-disable-next-line react/prop-types
 export default function Search({ podcastShows, setSearchResults }) {
   const [query, setQuery] = useState("");
 

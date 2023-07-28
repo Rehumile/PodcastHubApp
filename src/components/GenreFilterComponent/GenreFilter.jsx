@@ -1,9 +1,9 @@
-import React from "react";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+// eslint-disable-next-line react/prop-types
 export default function GenreFilter({selectedGenre, setSelectedGenre}) {
 
   /**

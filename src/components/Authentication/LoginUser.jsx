@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../Authentication/LoginUser.css";
 
+// eslint-disable-next-line react/prop-types
 export default function LoginUser({ setSession }) {
   const [formData, setFormData] = useState({
     email: "",
