@@ -4,10 +4,10 @@
 For the final Capstone project from Dynamic Web Apps we were rquired build a user-friendly and engaging podcast app that allows users to explore an extensive collection of podcast shows, seamlessly play their favorite episodes, and keep track of the ones they love the most. 
 
 - [REHSEK080\_FTO2301\_GroupB\_RehumileSekoto\_DWACapstone](#rehsek080_fto2301_groupb_rehumilesekoto_dwacapstone)
-  - [🎵Features](#features)
-  - [🎵Requirements](#requirements)
-  - [🎵Installation](#installation)
-  - [🎵Technologies Used](#technologies-used)
+  - [Features](#features)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Technologies Used](#technologies-used)
 
  ## 🎵Features
 
@@ -64,3 +64,8 @@ Let's get started!
 - Material UI
 - fuse.js
 - React Slick
+- Redux toolkit
+  
+## Hosting
+This project is hosted on https://podcast-hub-capstone-project.netlify.app/;
+  
