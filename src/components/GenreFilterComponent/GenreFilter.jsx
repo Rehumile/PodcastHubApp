@@ -6,6 +6,10 @@ import Select from '@mui/material/Select';
 
 export default function GenreFilter({selectedGenre, setSelectedGenre}) {
 
+  /**
+   * Function to set state of he genre that was selected
+   * @param {Object} event 
+   */
     const handleChange = (event) => {
         setSelectedGenre(event.target.value);
       };

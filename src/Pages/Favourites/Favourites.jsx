@@ -1,4 +1,3 @@
-import react from "React";
 import { useState, useEffect } from "React";
 import { Container } from "@mui/material";
 import "../Favourites/Favourites.css";
@@ -33,17 +32,21 @@ export default function Favourites({
   //set state for shared URLs
   const [sharedURLs, setSharedURLs] = useState([]);
 
-  // Fetch favorite episodes data from the composite key that is saved in favorites. Made from show ID, season number and episode number
+  //
+  /**
+   * Asnc Funtionc to fetch favorite episodes data from the favouriteID that is saved in favoritesEpisodesList. 
+   * Made from show ID, season number and episode number
+   */
   useEffect(() => {
     const fetchFavoriteEpisodes = async () => {
       const episodes = [];
 
-      // Loop through composite keys in favorites array
+      //looping through favourite IDs
       for (let episode of FavouritesEpisodesLists) {
         const [podcastId, seasonNum, episodeNum] =
           episode.favourite_id.split("-");
 
-        // Fetch and store show data in state
+        
         try {
           const response = await fetch(
             `https://podcast-api.netlify.app/id/${podcastId}`
@@ -53,7 +56,7 @@ export default function Favourites({
             (season) => season.season === parseInt(seasonNum)
           );
 
-          // Build object for favorite data
+          // Build an object reference to store favorite episode data
           const favObject = {
             ID: episode.favouriteId,
             show: data,
@@ -70,7 +73,8 @@ export default function Favourites({
           console.error(
             "Issue fetching this show's details. Please try again.",
             error
-          );
+            );
+            setIsError(true)
         }
       }
       setFavouriteEpisodes(episodes);
@@ -91,6 +95,12 @@ export default function Favourites({
     );
   }
 
+  /**
+   * Function to store the URL of the episode a user want to share
+   * @param {Number} podcastID
+   * @param { Number} seasonNumber
+   * @param {Number} episodeNumber
+   */
   const handleShareEpisode = (podcastID, seasonNumber, episodeNumber) => {
     const sharedURL = `http://localhost:5173/listen?podcast=${podcastID}&season=${seasonNumber}&episode=${episodeNumber}`;
     setSharedURLs((prevSharedUrls) => {
@@ -101,6 +111,10 @@ export default function Favourites({
     });
   };
 
+  /**
+   * Function to sort favourite episode according to the option chosen
+   * @param {String} order 
+   */
   const sortPodcast = (order) => {
     setSortedPodcasts(order);
 
@@ -127,6 +141,7 @@ export default function Favourites({
     setFavouriteEpisodes(orderedShows);
   };
 
+  //When episodes are loading, spinner will be rendered
   if (loadingDetails) {
     return (
       <div className="loading--icon">

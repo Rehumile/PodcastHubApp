@@ -10,6 +10,10 @@ export default function SignUp() {
     password: "",
   });
 
+  /**
+   * function that sets state variables for input fields
+   * @param {Object} event 
+   */
   const handleChange = (event) => {
     setFormData((prevFormData) => {
       return {
@@ -19,6 +23,11 @@ export default function SignUp() {
     });
   };
 
+  /**
+   * Function that handles the submission of form. Using the supabase method
+   * to sign in new users. Once submitted an alert to verify email will be sent
+   * @param {Object} event 
+   */
   async function handleSubmit(event) {
     event.preventDefault();
     try {

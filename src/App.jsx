@@ -6,9 +6,6 @@ import PodcastPreview from "./Pages/PodcastPreview/PodcastPreview";
  import Favourites from "./Pages/Favourites/Favourites";
 import { SignUp, LoginUser } from "./components/Authentication";
 import { getSavedLastPlayedEpisode } from "./utils/localStorage";
-
-
-// import Login from "./Pages/Login/Login";
  import SinglePodcastDetails from "./components/SinglePodcastDetails/SInglePodcastDetails";
   import AudioPlayer from './components/AudioPlayer/AudioPlayer'
  import { useDispatch } from "react-redux";
@@ -16,13 +13,20 @@ import { getSavedLastPlayedEpisode } from "./utils/localStorage";
 import { supabase } from "./supabaseClient";
 
 function App() {
+  //set state for store podcast ID of the selected shows
     const [selectedPodcastId, setSelectedPodcastId] = useState(null);
+
+    // set state to store favourites
    const [favourites, setFavourites] = useState([]);
+
+   //set state for when user views the Favourites Page
    const [viewFavouritesPage, setViewFavouritesPage] = useState(false);
+
+   //set state for when user views the Login Page
    const [viewLoginPage, setViewLoginPage] = useState(false)
 
+   // set state to store session when user is authenticated
    const [session, setSession] = useState(false)
-   const [user, setUser] = useState(null)
 
   
   const dispatch = useDispatch();
@@ -32,12 +36,13 @@ function App() {
     sessionStorage.setItem('token', JSON.stringify(session))
   }
    
+  // fetch session from session storage and set in state variable
   useEffect(() => {
     if(sessionStorage.getItem('session')) {
       let data = JSON.parse(sessionStorage.getItem('session'))
       setSession(data)
     }
-  })
+  },[])
 
   // render the favourite episodes from database if user is logged in
   useEffect(() => {
@@ -46,7 +51,7 @@ function App() {
 
 
 
-  //retrieve the last played episode from local storage when app loads
+  // retrieve the last played episode from local storage when app loads
   useEffect(()=> {
     const lastPlayedEpisode = getSavedLastPlayedEpisode();
     if(lastPlayedEpisode) {
@@ -55,15 +60,27 @@ function App() {
   },[])
 
  
-
+/**
+ * sets state to selected podcast
+ * @param {Number} showId 
+ */
   const handleOpenCard = async (showId) => {
     setSelectedPodcastId(showId);
   };
 
+  /**
+   * function to set state to null when user click the `Go Back` button
+   */
   const handleGoBack = () => {
     setSelectedPodcastId(null);
   };
 
+  /**
+   * Function to add or remove favourites from the Supabase database
+   * @param {Array} singlePodcast 
+   * @param {Array} season 
+   * @param {Object} episode 
+   */
   const handleTogglefavourite = (singlePodcast, season, episode) => {
     const favouriteId = `${singlePodcast.id}-${season.season}-${episode.episode}`;
     if (favourites.some((episode) => episode.favouriteId === favouriteId)) {
@@ -74,12 +91,19 @@ function App() {
   };
 
 
+  /**
+   * Async function the add favourite episode to supabase database. User should
+   * authenticated to be able to add to favourites
+   * @param {Number} favouriteEpisodeId 
+   * @returns 
+   */
   const addToFavouritesDatabase = async (favouriteEpisodeId) => {
     if (!session) {
-      alert("User not authenticated")
+      alert("User not authenticated. Please sign in to add favorites")
       return;
     }
     try {
+      // created object reference to insert to database
       const favouriteEpisode = {
         favourite_id: favouriteEpisodeId,
         id: session.user.id,
@@ -90,9 +114,9 @@ function App() {
       .from('favourites')
       .insert([favouriteEpisode])
       if (error){
-        console.error('error saving episode to favourites.' ,error)
+        alert('error saving episode to favourites.' ,error)
       } else {
-        console.log('episode is added to favourites', data)
+        alert('episode is added to favourites', data)
         fetchFavouriteEpisodesFromDatabase()
       }
     } catch (error) {
@@ -101,6 +125,10 @@ function App() {
   }
 
 
+  /**
+   * Async function to remove favourites from supabase database
+   * @param {Number} favouriteEpisodeId 
+   */
   const removeFavouriteFromDatabase = async (favouriteEpisodeId) => {
     try {
       const {data, error} = await supabase
@@ -109,9 +137,9 @@ function App() {
       .eq('id', session.user.id) 
       .eq('favourite_id', favouriteEpisodeId)
       if (error) {
-        console.error('Error removing from favorites:', error);
+        alert('Error removing from favorites:', error);
       } else {
-        console.log('Episode removed from favorites:', data);
+        alert('Episode removed from favorites:', data);
     fetchFavouriteEpisodesFromDatabase() 
       }
     } catch (error) {
@@ -119,6 +147,11 @@ function App() {
     }
   } 
 
+  /**
+   * Async function to fetch favourite episodes from data
+   * and set state variable to data provided
+   * @returns 
+   */
   const fetchFavouriteEpisodesFromDatabase = async () => {
     if (!session) return; 
 
@@ -135,13 +168,24 @@ function App() {
   };
  
 
+  /**
+   * Function to toggle viewing of the favourites page
+   */
   const handleFavNavigation = () => {
     setViewFavouritesPage((prevState) => !prevState);
   };
+
+  /**
+   * Function to toggle viewing of favourites page
+   */
   const handleLoginNavigation = () => {
     setViewLoginPage((prevState) => !prevState);
   };
 
+  /**
+   * function to dispatch and set selected episode to played for audio player
+   * @param {Object} episode 
+   */
   const handleEpisode=(episode)=>{
     dispatch(selectedEpisode(episode))
   }

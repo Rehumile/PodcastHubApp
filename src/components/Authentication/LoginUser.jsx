@@ -11,6 +11,10 @@ export default function LoginUser({ setSession }) {
   });
   const navigate = useNavigate();
 
+  /**
+   * function that sets state variables for input fields
+   * @param {Object} event 
+   */
   const handleChange = (event) => {
     setFormData((prevFormData) => {
       return {
@@ -20,6 +24,12 @@ export default function LoginUser({ setSession }) {
     });
   };
 
+  /**
+   * Function that handles the submission of form. Using the supabase method
+   * to sign exisiting users. Once authenticated the page will be redirected to the
+   * podcast previews page
+   * @param {Object} event 
+   */
   async function handleSubmit(event) {
     event.preventDefault();
     try {

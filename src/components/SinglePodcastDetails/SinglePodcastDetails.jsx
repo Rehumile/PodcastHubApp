@@ -25,9 +25,13 @@ export default function SinglePodcastDetails({
 
   //set state for selected genre
   const [selectedSeason, setSelectedSeason] = useState(1);
+
+  //set state to store selected season data
   const [selectedSeasonData, setSelectedSeasonData] = useState(null);
 
-  //fetch the data for single podcast
+  /**
+   * async function to fetch specific shows data using the Show ID
+   */
   useEffect(() => {
     const fetchSinglePodcast = async () => {
       try {
@@ -35,12 +39,10 @@ export default function SinglePodcastDetails({
           `https://podcast-api.netlify.app/id/${podcastId}`
         );
         const result = await data.json();
-
         setSingleShow(result);
         setLoadingDetails(false);
       } catch (error) {
         console.log(`ERROR ${error}`);
-        // setIsError(true);
       }
     };
 
@@ -56,7 +58,11 @@ export default function SinglePodcastDetails({
     }
   }, [selectedSeason, singleShow]);
 
-  // Handles the selection of a season's data in a show, and sets it to state
+  /
+  /**
+   * Function that handles the selection of a season's data in a show, and sets it to state
+   * @param {Object} event 
+   */
   const handleSelectSeason = (event) => {
     const seasonNum = parseInt(event.target.value);
     setSelectedSeason(seasonNum);
@@ -68,6 +74,7 @@ export default function SinglePodcastDetails({
     }
   };
 
+  // when data is being fetched, loading spinner will be rendered
   if (loadingDetails) {
     return (
       <div className="loading--icon">
@@ -84,6 +91,12 @@ export default function SinglePodcastDetails({
     );
   }
 
+  /**
+   * helper function to shorten characters of long paragraphs
+   * @param {String} text 
+   * @param {Number} maxCharacters 
+   * @returns 
+   */
   const shortenDescription = (text, maxCharacters) => {
     if (text.length <= maxCharacters) {
       return text;

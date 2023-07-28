@@ -5,6 +5,11 @@ import "../SearchComponent/Search.css";
 export default function Search({ podcastShows, setSearchResults }) {
   const [query, setQuery] = useState("");
 
+  /**
+   * function to search from podcasts based on the title. Perform a fuzzy match
+   * and the state to the results
+   * @param {String} query 
+   */
   const handleSearch = (query) => {
     const fuse = new Fuse(podcastShows, {
       keys: ["title"],

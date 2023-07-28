@@ -23,6 +23,7 @@ export default function AudioPlayer() {
     return storedCompletedEpisodes ? JSON.parse(storedCompletedEpisodes) : [];
   });
 
+  // fetch episode from the redux store
   const currentEpisode = useSelector(
     (state) => state.audioPlayer.selectedEpisode
   );
@@ -30,6 +31,7 @@ export default function AudioPlayer() {
   const audioRef = useRef(null);
   const progressBarRef = useRef();
 
+  // Load the last played episode from local storage when the component mounts
   useEffect(() => {
     if (currentEpisode) {
       audioRef.current.src = currentEpisode.file;
@@ -52,8 +54,12 @@ export default function AudioPlayer() {
     }
   }, []);
 
-  // adding prompt to confirm whether user wants to leave even when audio is playing
+  // 
 
+  /**
+   * Function within a useEffect to handle adding a prompt 
+   * to confirm whether user wants to leave even when audio is playing
+   */
   useEffect(() => {
     const audioElement = audioRef.current;
     const handleBeforeUnload = (event) => {
@@ -70,7 +76,12 @@ export default function AudioPlayer() {
     };
   }, []);
 
-  //function to update progress of current episode
+  
+  /**
+   * function to update progress of current episode
+   * @param {Number} episodeId 
+   * @param {Number} progress 
+   */
   const updateProgress = (episodeId, progress) => {
     setEpisodeProgress((prevProgress) => ({
       ...prevProgress,
@@ -79,9 +90,14 @@ export default function AudioPlayer() {
   };
 
   if (!currentEpisode) {
+     // Return null if there is no current episode selected
     return null;
   }
 
+  /**
+   * function handle play and pause states if user is playing audio
+   * the episode will updated to track the time
+   */
   const togglePlayPause = () => {
     if (audioRef.current) {
       if (audioRef.current.paused) {
@@ -98,12 +114,18 @@ export default function AudioPlayer() {
     }
   };
 
+  /**
+   * // Function to handle the "loadedmetadata" event of the audio element
+   */
   const onLoadedMetadata = () => {
     const seconds = audioRef.current.duration;
     setDuration(seconds);
     progressBarRef.current.max = seconds;
   };
 
+  /**
+   * Function to set the time progress as user is playing audio and update the progress
+   */
   const onPlaying = () => {
     const currentTime = audioRef.current.currentTime;
     setTimeProgress(currentTime);
@@ -113,8 +135,13 @@ export default function AudioPlayer() {
     }
   };
 
-  //function to be able to click on seek bar and it will go to specifc audio timeframe
-
+ 
+ 
+  /**
+   * Function to be able to click on the seek bar
+   * and seek to a specific audio timeframe
+   * @param {Object} e 
+   */
   const clickSeekBar = (e) => {
     const progressBarWidth = progressBarRef.current.clientWidth;
     const offsetX = e.nativeEvent.offsetX;
@@ -124,6 +151,10 @@ export default function AudioPlayer() {
     audioRef.current.currentTime = newCurrentTime;
   };
 
+  /**
+   * Function to save the last played progress of the current episode 
+   * to local storage
+   */
   const saveLastPlayedProgress = () => {
     if (currentEpisode) {
       const currentTime = audioRef.current.currentTime;
@@ -135,13 +166,18 @@ export default function AudioPlayer() {
     }
   };
 
+  /**
+   * Function that handles the closing of the audio player
+   */
   const handleCloseAudioPlayer = () => {
     audioRef.current.pause();
     setIsPlaying(false);
     if (currentEpisode) {
+      // Save the last played progress and episode to local storage 
       updateProgress(currentEpisode.episode, audioRef.current.currentTime);
       localStorage.setItem("lastPlayedEpisode", JSON.stringify(currentEpisode));
 
+      // Update completed episodes list and save it to local storage
       if (!completedEpisodes.includes(currentEpisode.title)) {
         setCompletedEpisodes([...completedEpisodes, currentEpisode.title]);
         localStorage.setItem(
@@ -154,6 +190,7 @@ export default function AudioPlayer() {
     saveLastPlayedProgress();
   };
 
+  // Function to reset all progress, effectively removing listening history
   const resetProgress = () => {
     localStorage.removeItem("lastPlayedEpisode");
     localStorage.removeItem("completedEpisodes");
@@ -164,7 +201,12 @@ export default function AudioPlayer() {
    
   };
 
-  // to display time duration in minutes and seconds
+
+  /**
+   * Function to display time duration in minutes and seconds
+   * @param {Number} time 
+   * @returns 
+   */
   const formatTime = (time) => {
     if (time && !isNaN(time)) {
       const minutes = Math.floor(time / 60);

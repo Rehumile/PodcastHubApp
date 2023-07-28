@@ -51,6 +51,10 @@ export default function PodcastPreview({ handleOpenCard, session }) {
 
   const navigate = useNavigate();
 
+  /**
+   * function to fetch podcast shows from endpoint. Added try catch method to 
+   * handle any errors. function will be called in a useEffect
+   */
   const fetchPodcasts = async () => {
     try {
       const data = await fetch(`https://podcast-api.netlify.app/shows`);
@@ -68,13 +72,20 @@ export default function PodcastPreview({ handleOpenCard, session }) {
     fetchPodcasts();
   }, []);
 
-  // Handle initial search and set searchResults to all podcasts
+  /**
+   *Handle initial search and set searchResults to all podcasts 
+    */ 
   useEffect(() => {
     setSearchResults(podcastShows);
   }, [podcastShows]);
 
  
 
+  /**
+   * Function to shuffle the shows in the Carousel
+   * @param {Array} array 
+   * @returns array
+   */
   function shuffleArray(array) {
     // Create a copy of the original array
     const shuffledArray = [...array];
@@ -88,6 +99,9 @@ export default function PodcastPreview({ handleOpenCard, session }) {
     return shuffledArray;
   }
 
+  /**
+   * When podcasts are being fetched a loading spinner will be displayey
+   */
   if (loadingPodcasts) {
     return (
       <div className="loading--icon">
@@ -104,6 +118,11 @@ export default function PodcastPreview({ handleOpenCard, session }) {
     );
   }
 
+  /**
+   * Helper function to return genre string
+   * @param {Number} genreId 
+   * @returns 
+   */
   function getGenreTitle(genreId) {
     if (genreId > 0 && genreId <= genres.length) {
       return genres[genreId - 1];
@@ -111,15 +130,24 @@ export default function PodcastPreview({ handleOpenCard, session }) {
     return "Unknown Genre";
   }
 
+  /**
+   * function to handle the opening of a specific podcast
+   * also on the carousel slide
+   * @param {Number} showId 
+   */
   const handleShow = (showId) => {
     handleOpenCard(showId);
-    console.log(showId);
 
     setCarouselShows((prevCarouselShows) =>
       prevCarouselShows.filter((show) => show.id !== showId)
     );
   };
 
+  /**
+   * Ternary condition that states if a user clicks on a selected genre from dropdown,
+   * It will map over the genres of the podcast to find its corrensponding String value
+   * if there is no match then return search Results
+   */
   const filteredShowsByGenre = selectedGenre
     ? searchResults.filter((podcast) =>
         podcast.genres
@@ -128,6 +156,10 @@ export default function PodcastPreview({ handleOpenCard, session }) {
       )
     : searchResults;
 
+    /**
+     * Function to sort podcasts depending on the option that was chosen
+     * @param {String} order 
+     */
   const sortPodcast = (order) => {
     setSortedPodcasts(order);
 
@@ -151,14 +183,20 @@ export default function PodcastPreview({ handleOpenCard, session }) {
   };
 
 
-  //this function will log user out of their account. remove token from session storage
-  // and navigate back to login page
+
+  /**
+   * Function to log user of of the account by removing session for Session Storage
+   */
   const handleLogout = () => {
     sessionStorage.removeItem("session");
     alert('You have been logged out')
     navigate("/login");
   };
 
+  /**
+   * Function that will handle the loading of more shows
+   * when user clicks on the 'Show more' button
+   */
   const handleLoadMoreShows = () => {
     setLoadingMoreShows(true);
     try {
@@ -173,12 +211,12 @@ export default function PodcastPreview({ handleOpenCard, session }) {
     setLoadingMoreShows(false);
   };
 
+/**
+ * Map over podcasts to return each card that has its own individual podcast details
+ */
   let shuffledPodcasts = shuffleArray(filteredShowsByGenre);
-
   const cards = filteredShowsByGenre.slice(0, numOfVisibleShows).map((show) => {
     const genreTitles = show.genres.map((genreId) => getGenreTitle(genreId));
-
-    
     return (
       <Card
         key={show.id}
@@ -192,6 +230,7 @@ export default function PodcastPreview({ handleOpenCard, session }) {
 
 
   const showMoreButton = numOfVisibleShows <= filteredShowsByGenre.length;
+  
   return (
     <>
     <div className="intro--container">

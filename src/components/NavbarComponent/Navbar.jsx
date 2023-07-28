@@ -18,15 +18,17 @@ export default function Navbar({ handleFavNavigation, handleLoginNavigation }) {
   const [openDrawer, setOpenDrawer] = useState(true);
   const theme = useTheme();
 
-  //breakpoints.down --> this mean from smaller screen downwards
   const isMatch = useMediaQuery(theme.breakpoints.down("sm"));
 
-  //  handle change
-  const handleChange = (event, newValue) => {
+/**
+ * Function to set value of the tab
+ * @param {Number} newValue 
+ */
+  const handleChange = ( newValue) => {
     setTabValue(newValue);
   };
 
-  //section for routing
+
   const navigate = useNavigate();
   useEffect(() => {
     if (tabValue === 0) navigate("/");
