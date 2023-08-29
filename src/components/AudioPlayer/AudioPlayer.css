@@ -11,6 +11,10 @@
     background-color: #003EAB;
     transition: transform 0.3s ease;
     }
+
+    .audio--player-close {
+      display: none;
+    }
     
     
     .episode--title {
@@ -51,6 +55,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    .close--button {
+      font-size: 2rem;
+      cursor: pointer;
     }
 
     .reset {

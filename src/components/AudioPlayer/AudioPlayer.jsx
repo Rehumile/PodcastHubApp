@@ -17,6 +17,9 @@ export default function AudioPlayer() {
   //set state to track episode progress
   const [episodeProgress, setEpisodeProgress] = useState({});
 
+  //set state to close audio player
+  const [closePlayer, setClosePlayer] = useState(false);
+
   //set state for completed episodes
   const [completedEpisodes, setCompletedEpisodes] = useState(() => {
     const storedCompletedEpisodes = localStorage.getItem("completedEpisodes");
@@ -37,6 +40,7 @@ export default function AudioPlayer() {
       audioRef.current.src = currentEpisode.file;
       audioRef.current.play();
       setIsPlaying(true);
+      setClosePlayer(false)
       // save the last played episode to local storage
       localStorage.setItem("lastPlayedEpisode", JSON.stringify(currentEpisode));
     }
@@ -172,6 +176,8 @@ export default function AudioPlayer() {
   const handleCloseAudioPlayer = () => {
     audioRef.current.pause();
     setIsPlaying(false);
+    setClosePlayer(true);
+    
     if (currentEpisode) {
       // Save the last played progress and episode to local storage 
       updateProgress(currentEpisode.episode, audioRef.current.currentTime);
@@ -219,13 +225,14 @@ export default function AudioPlayer() {
   };
 
   return (
-    <div className="audio--player">
-      <div onClick={handleCloseAudioPlayer}>
-        <div className="close--reset" onClick={() => resetProgress()}>
-          <IconButton sx={{ fontSize: "0.5rem", color: "white" }}>
+    <div className={closePlayer ? "audio--player-close" :"audio--player"}>
+      <div >
+        <div className="close--reset">
+          {/* <IconButton sx={{ fontSize: "0.5rem", color: "white" }}>
             <CloseIcon />
-          </IconButton>
-          <button className="reset" onClick={resetProgress}>
+          </IconButton> */}
+          <i className="uil uil-times close--button" onClick={handleCloseAudioPlayer} ></i>
+          <button className="reset" onClick={() => resetProgress()}>
             Reset
           </button>
         </div>
