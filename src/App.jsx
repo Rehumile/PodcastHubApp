@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import CssBaseline from "@mui/material/CssBaseline";
  import Navbar from "./components/NavbarComponent/Navbar";
 import PodcastPreview from "./Pages/PodcastPreview/PodcastPreview";
  import Favourites from "./Pages/Favourites/Favourites";

@@ -24,7 +24,7 @@ export default function Navbar({ handleFavNavigation, handleLoginNavigation }) {
   const isMatch = useMediaQuery(theme.breakpoints.down("sm"));
 
 
- //Function to set value of the tab
+ //Function to set value of the tab or option for navigation bar
 
   const handleChange = ( event, newValue) => {
     setTabValue(newValue);
@@ -102,4 +102,4 @@ export default function Navbar({ handleFavNavigation, handleLoginNavigation }) {
     </Box>
   );
 }
-//
+
