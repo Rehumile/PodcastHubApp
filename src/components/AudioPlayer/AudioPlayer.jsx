@@ -64,21 +64,25 @@ export default function AudioPlayer() {
    * Function within a useEffect to handle adding a prompt 
    * to confirm whether user wants to leave even when audio is playing
    */
-  useEffect(() => {
-    const audioElement = audioRef.current;
-    const handleBeforeUnload = (event) => {
-      if (!audioElement.paused) {
-        event.preventDefault();
-        event.returnValue = "";
-        return "";
-      }
-    };
+ 
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.addEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+  useEffect(() => {
+    const promptMessageBeforeClosing = (event) => {
+      if (isPlaying) {
+        event.preventDefault();
+        return "Are you sure you want to leave?"
+      }
+    }
+      window.addEventListener(
+        "beforeunload",
+        promptMessageBeforeClosing
+      );
+      return () => 
+      window.addEventListener(
+        "beforeunload",
+        promptMessageBeforeClosing
+      );
+  }, [isPlaying])
 
   
   /**
